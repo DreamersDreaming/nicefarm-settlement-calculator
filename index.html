@@ -261,6 +261,47 @@
   details.formula .fx li{margin-bottom:3px}
   details.formula code{background:#f1f6f3;border-radius:5px;padding:1px 5px;font-size:.94em;color:#14483a;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
 
+  /* ---------- CONVERT (결과 → 증적 전환) ---------- */
+  .convert{
+    margin-top:clamp(18px,3vw,26px);padding:clamp(16px,2.6vw,24px);
+    border:1.5px solid #b7ecda;border-radius:var(--r-md);
+    background:linear-gradient(180deg,#f1fdf8 0%,#ffffff 78%);
+    box-shadow:var(--shadow-sm);
+  }
+  .convert__head h3{font-size:clamp(1rem,2.2vw,1.16rem);font-weight:800;color:var(--ink)}
+  .convert__head .opt{font-weight:600;color:var(--muted);font-size:.86em;white-space:nowrap}
+  .convert__lead{font-size:.86rem;color:var(--muted);line-height:1.65;margin-top:6px;max-width:660px}
+  .convert__lead b{color:#0d3b2c}
+
+  .convert__sum{
+    display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap;
+    margin:14px 0 12px;padding:11px 13px;border-radius:12px;
+    background:#eafaf3;border:1px dashed #a9e8d2;
+  }
+  .convert__sumlab{flex:none;font-size:.7rem;font-weight:800;color:#0a7c59;letter-spacing:.04em}
+  .convert__sumtxt{
+    flex:1 1 240px;min-width:0;font-size:.86rem;font-weight:700;color:#0d3b2c;
+    font-variant-numeric:tabular-nums;line-height:1.5;
+  }
+  .convert__copy{
+    flex:none;font-family:inherit;font-size:.74rem;font-weight:800;color:#0a6b4e;
+    background:#fff;border:1px solid #b7ecda;border-radius:9px;padding:6px 10px;cursor:pointer;
+    transition:border-color .15s,background .15s,color .15s;line-height:1.3;
+  }
+  .convert__copy:hover{background:#0a7c59;border-color:#0a7c59;color:#fff}
+  .convert__copy:disabled{opacity:.8;cursor:default}
+  .convert__copy:focus-visible{outline:2px solid var(--mint);outline-offset:2px}
+
+  .convert__acts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media (max-width:640px){.convert__acts{grid-template-columns:1fr}}
+  .convert .cta--line{
+    display:inline-flex;align-items:center;justify-content:center;gap:7px;text-align:center;
+    background:#fff;color:#0d3b2c;border:1.5px solid #b7ecda;box-shadow:none;
+    font-size:.92rem;font-weight:800;padding:14px 16px;border-radius:14px;
+  }
+  .convert .cta--line:hover{background:#f1fdf8;border-color:var(--mint);transform:translateY(-1px)}
+  .convert__note{margin-top:10px;font-size:.75rem;color:var(--muted);line-height:1.6}
+
   /* ---------- SECTIONS ---------- */
   .section{padding:clamp(46px,7vw,80px) 0}
   .section--white{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
@@ -516,6 +557,38 @@
               <button type="button" class="cta cta--ghost" id="copyBtn">계산 결과 복사</button>
             </div>
           </div>
+        </div>
+
+        <!-- 결과 → 무료 비교표 전환 CTA -->
+        <div class="convert" id="convertBox">
+          <div class="convert__head">
+            <h3>내 계산 결과로 무료 비교표 받기 <span class="opt">(1분 체크)</span></h3>
+            <p class="convert__lead">
+              지금 계산한 <b>월 납품액 · 정산 주기 · 수수료율</b>을 그대로 넘겨주시면, 같은 기준으로
+              채널별 수수료 비교표와 정산 누락 점검 결과를 만들어 회신드립니다. 정산서는 1건이면 되고,
+              거래처·단가는 가리셔도 됩니다.
+            </p>
+          </div>
+
+          <div class="convert__sum">
+            <span class="convert__sumlab">내 결과</span>
+            <p class="convert__sumtxt" id="sumLine">월 1억 원 납품 · 60일 정산 · 1회 1% 차감(연 6.08%) → 묶인 운전자금 2억 원 · 연 손실 1,217만 원</p>
+            <button type="button" class="convert__copy" id="copyLineBtn">한 줄 복사</button>
+          </div>
+
+          <div class="convert__acts">
+            <a class="cta cta--block" id="formBtn" href="https://forms.gle/wB7M9gDrPymoHdC86" target="_blank" rel="noopener noreferrer">
+              <span>1분 폼으로 받기 <span class="cta-arrow" aria-hidden="true">→</span></span>
+              <small>1분 · 계약·도입 의무 없음 · 영업 전화 없음</small>
+            </a>
+            <a class="cta cta--line" id="mailBtn" href="mailto:silverstrom@naver.com?subject=%EC%A0%95%EC%82%B0%20%EB%B9%84%EA%B5%90%ED%91%9C%20%EC%9A%94%EC%B2%AD%20%C2%B7%20%EC%9B%94%201%EC%96%B5%20%EC%9B%90%20%C2%B7%2060%EC%9D%BC%20%EC%A0%95%EC%82%B0&amp;body=%EC%95%88%EB%85%95%ED%95%98%EC%84%B8%EC%9A%94.%20%EA%B3%84%EC%82%B0%EA%B8%B0%EC%97%90%EC%84%9C%20%EB%82%98%EC%98%A8%20%EC%A0%9C%20%EC%A1%B0%EA%B1%B4%EC%9E%85%EB%8B%88%EB%8B%A4.%0D%0A%EC%9B%94%20%EB%82%A9%ED%92%88%EC%95%A1%201%EC%96%B5%20%EC%9B%90%20%C2%B7%20%EC%A0%95%EC%82%B0%20%EC%A3%BC%EA%B8%B0%2060%EC%9D%BC%20%C2%B7%201%ED%9A%8C%201%25%20%EC%B0%A8%EA%B0%90%20%28%EC%97%B0%206.08%25%20%ED%99%98%EC%82%B0%29%0D%0A%E2%86%92%20%EB%AC%B6%EC%9D%B8%20%EC%9A%B4%EC%A0%84%EC%9E%90%EA%B8%88%202%EC%96%B5%20%EC%9B%90%20%C2%B7%20%EC%97%B0%20%EA%B8%88%EC%9C%B5%C2%B7%ED%95%A0%EC%9D%B8%20%EC%86%90%EC%8B%A4%201%2C217%EB%A7%8C%20%EC%9B%90%0D%0A%0D%0A%EC%9D%B4%20%EC%A1%B0%EA%B1%B4%EC%9C%BC%EB%A1%9C%20%EC%B1%84%EB%84%90%EB%B3%84%20%EC%88%98%EC%88%98%EB%A3%8C%20%EB%B9%84%EA%B5%90%ED%91%9C%EB%A5%BC%20%EB%B0%9B%EC%95%84%EB%B3%B4%EA%B3%A0%20%EC%8B%B6%EC%8A%B5%EB%8B%88%EB%8B%A4.%0D%0A%EC%A2%8B%EC%9D%80%EB%86%8D%EC%9E%A5%28NiceFarm%29%20%EA%B3%84%EC%82%B0%EA%B8%B0%EC%97%90%EC%84%9C%20%EB%B3%B4%EB%83%84">
+              <span aria-hidden="true">✉</span> 이메일로 2줄만 보내기
+            </a>
+          </div>
+          <p class="convert__note">
+            메일은 계산 결과 2줄이 미리 채워진 채로 열립니다. 내용을 확인하고 보내기만 누르시면 됩니다.
+            폼·메일 모두 회신은 좋은농장(NiceFarm) 명의로 드립니다.
+          </p>
         </div>
 
         <div class="calc-foot">
@@ -806,7 +879,10 @@
     rSave: $("#rSave"),
     rSaveUnit: $("#rSaveUnit"),
     rSaveNote: $("#rSaveNote"),
-    copyBtn: $("#copyBtn")
+    copyBtn: $("#copyBtn"),
+    sumLine: $("#sumLine"),
+    copyLineBtn: $("#copyLineBtn"),
+    mailBtn: $("#mailBtn")
   };
   if (!el.amount || !el.bars) return; // 계산기 없는 문서에서는 조용히 종료
 
@@ -897,6 +973,10 @@
     // 슬라이더 채움 비율
     var p = (Number(el.amountRange.value) / 10) + "%";
     el.amountRange.style.setProperty("--pct", p);
+
+    // 전환 CTA: 한 줄 요약 + 메일 본문 갱신
+    if (el.sumLine) el.sumLine.textContent = summaryLine();
+    if (el.mailBtn) el.mailBtn.setAttribute("href", mailtoHref());
   }
 
   function currentCost() { return state.mode === "fee" ? state.fee : state.rate; }
@@ -991,6 +1071,48 @@
   });
 
   /* ---------- 결과 복사 ---------- */
+  var FORM_URL = "https://forms.gle/wB7M9gDrPymoHdC86";
+  var MAIL_TO = "silverstrom@naver.com";
+
+  function costShort() {
+    var r = LAST || computeCore(state);
+    return state.mode === "fee"
+      ? "1회 " + trim(state.fee) + "% 차감(연 " + pct2(r.effRate) + ")"
+      : "연 " + trim(state.rate) + "%";
+  }
+
+  // 계산기 위젯·메일 본문에 쓰는 한 줄 요약
+  function summaryLine() {
+    var r = LAST || computeCore(state);
+    return "월 " + fmtMoney(state.monthly) + " 납품 · " + state.days + "일 정산 · " + costShort() +
+      " → 묶인 운전자금 " + fmtMoney(r.capital) + " · 연 손실 " + fmtMoney(r.annualCost);
+  }
+
+  function mailSubject() {
+    return "정산 비교표 요청 · 월 " + fmtMoney(state.monthly) + " · " + state.days + "일 정산";
+  }
+
+  function mailBody() {
+    var r = LAST || computeCore(state);
+    var costLine = state.mode === "fee"
+      ? "1회 " + trim(state.fee) + "% 차감 (연 " + pct2(r.effRate) + " 환산)"
+      : "연 " + trim(state.rate) + "%";
+    return [
+      "안녕하세요. 계산기에서 나온 제 조건입니다.",
+      "월 납품액 " + fmtMoney(state.monthly) + " · 정산 주기 " + state.days + "일 · " + costLine,
+      "→ 묶인 운전자금 " + fmtMoney(r.capital) + " · 연 금융·할인 손실 " + fmtMoney(r.annualCost),
+      "",
+      "이 조건으로 채널별 수수료 비교표를 받아보고 싶습니다.",
+      "좋은농장(NiceFarm) 계산기에서 보냄"
+    ].join("\r\n");
+  }
+
+  function mailtoHref() {
+    return "mailto:" + MAIL_TO +
+      "?subject=" + encodeURIComponent(mailSubject()) +
+      "&body=" + encodeURIComponent(mailBody());
+  }
+
   function summaryText() {
     var r = LAST || computeCore(state);
     var costLine = state.mode === "fee"
@@ -1012,19 +1134,18 @@
     ].join("\n");
   }
 
-  function flash(text) {
-    var old = el.copyBtn.textContent;
-    el.copyBtn.textContent = text;
-    el.copyBtn.disabled = true;
+  function flashBtn(btn, text) {
+    if (!btn) return;
+    var old = btn.textContent;
+    btn.textContent = text;
+    btn.disabled = true;
     setTimeout(function () {
-      el.copyBtn.textContent = old;
-      el.copyBtn.disabled = false;
+      btn.textContent = old;
+      btn.disabled = false;
     }, 1600);
   }
 
-  el.copyBtn.addEventListener("click", function () {
-    var text = summaryText();
-    var done = function () { flash("복사됐습니다 ✓"); };
+  function copyText(text, done) {
     var fallback = function () {
       var ta = document.createElement("textarea");
       ta.value = text;
@@ -1036,14 +1157,28 @@
       var ok = false;
       try { ok = document.execCommand("copy"); } catch (err) { ok = false; }
       document.body.removeChild(ta);
-      flash(ok ? "복사됐습니다 ✓" : "복사 실패 — 길게 눌러 복사해 주세요");
+      done(ok);
     };
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(done, fallback);
+      navigator.clipboard.writeText(text).then(function () { done(true); }, fallback);
     } else {
       fallback();
     }
+  }
+
+  el.copyBtn.addEventListener("click", function () {
+    copyText(summaryText(), function (ok) {
+      flashBtn(el.copyBtn, ok ? "복사됐습니다 ✓" : "복사 실패 — 길게 눌러 복사해 주세요");
+    });
   });
+
+  if (el.copyLineBtn) {
+    el.copyLineBtn.addEventListener("click", function () {
+      copyText(summaryLine(), function (ok) {
+        flashBtn(el.copyLineBtn, ok ? "복사됨 ✓" : "복사 실패");
+      });
+    });
+  }
 
   /* ---------- URL 파라미터 프리필 (?m=10000&d=60&f=1 / ?mode=rate&r=6) ---------- */
   (function prefill() {
@@ -1084,6 +1219,8 @@
   el.amount.value = state.monthly.toLocaleString("ko-KR");
   el.amountRange.value = toSlider(state.monthly);
   el.cost.value = trim(currentCost());
+  if (el.sumLine) el.sumLine.textContent = summaryLine();
+  if (el.mailBtn) el.mailBtn.setAttribute("href", mailtoHref());
   render();
 })();
 </script>
