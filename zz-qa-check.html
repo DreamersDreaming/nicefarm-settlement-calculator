@@ -21,7 +21,7 @@ widths.forEach(w => {
   lab.textContent = w + 'px';
   const f = document.createElement('iframe');
   f.width = w; f.height = 980;
-  f.src = '../index.html?qa=' + w;
+  f.src = 'index.html?qa=' + w;
   col.appendChild(lab); col.appendChild(f);
   document.getElementById('row').appendChild(col);
   frames.push({w, f});
