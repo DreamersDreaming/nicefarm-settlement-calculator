@@ -3,837 +3,288 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>10초 정산 손실 자가계산기 | 좋은농장 NiceFarm</title>
-<meta name="description" content="월 납품액과 정산 주기만 넣으면 10초 만에 묶여 있는 운전자금과 연간 금융·할인 비용 손실이 계산됩니다. 정산서 1건이면 무료 AI 정산 누락 점검과 채널별 수수료 비교 리포트를 받아보세요.">
+<title>정산 묶인 돈 계산기 | 좋은농장 NiceFarm</title>
+<meta name="description" content="월 납품액과 정산 주기만 넣으면 정산 대금으로 묶여 있는 돈과 1년 비용이 바로 계산됩니다. 무료 비교표는 1분 설문으로 받아보세요.">
 <meta name="theme-color" content="#0f3d2e">
 <meta property="og:type" content="website">
-<meta property="og:title" content="산지 정산금, 1년에 얼마 손해 보고 계신가요? | 10초 자가계산기">
-<meta property="og:description" content="월 납품액·정산 주기·수수료율 3개만 입력하면 묶인 운전자금과 연간 손실액이 바로 나옵니다. 무료 AI 정산 누락 점검으로 이어집니다.">
+<meta property="og:title" content="정산 기다리는 동안, 내 돈은 얼마나 묶여 있을까요">
+<meta property="og:description" content="월 납품액과 정산 주기만 넣으면 바로 계산됩니다.">
 <meta property="og:locale" content="ko_KR">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%230f3d2e'/%3E%3Cpath d='M28 72V28h12v44H28zm18 0V40h12v32H46zm18 0V52h12v20H64z' fill='%2310b981'/%3E%3C/svg%3E">
 <style>
   :root{
-    --green-950:#08261d;
-    --green-900:#0b2f24;
-    --green-800:#0f3d2e;
-    --green-700:#155741;
+    --green:#0f3d2e;
+    --green-deep:#0a2a20;
     --mint:#10b981;
-    --mint-400:#34d399;
-    --mint-300:#6ee7b7;
-    --mint-50:#ecfdf5;
-    --ink:#0f1a16;
-    --body:#33463e;
-    --muted:#61756c;
-    --line:#e2e9e5;
-    --bg:#f5f8f6;
+    --ink:#12211b;
+    --body:#3c4f46;
+    --muted:#71837a;
+    --line:#e5ebe7;
+    --bg:#f6f8f7;
     --card:#ffffff;
-    --shadow-lg:0 30px 70px -34px rgba(8,38,29,.55);
-    --shadow-sm:0 8px 24px -16px rgba(8,38,29,.45);
-    --r-lg:26px;
-    --r-md:18px;
-    --r-sm:12px;
     --font:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","맑은 고딕","Noto Sans KR",Roboto,"Helvetica Neue",Arial,sans-serif;
   }
   *,*::before,*::after{box-sizing:border-box}
-  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  html{-webkit-text-size-adjust:100%;overflow-x:hidden}
   body{
     margin:0;background:var(--bg);color:var(--body);
-    font-family:var(--font);font-size:16px;line-height:1.65;
-    letter-spacing:-.01em;-webkit-font-smoothing:antialiased;
+    font-family:var(--font);font-size:16px;line-height:1.6;
+    letter-spacing:-.011em;-webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
   }
-  h1,h2,h3,h4{color:var(--ink);line-height:1.3;letter-spacing:-.03em;margin:0}
+  h1,h2,h3{margin:0;color:var(--ink);line-height:1.35;letter-spacing:-.03em}
   p{margin:0}
   a{color:inherit}
-  b,strong{font-weight:800}
   .num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
-  .wrap{width:min(1080px,100% - 40px);margin-inline:auto}
+  .wrap{width:100%;max-width:520px;margin:0 auto;padding:0 18px}
   .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 
-  /* ---------- HERO ---------- */
-  .hero{
-    position:relative;overflow:hidden;color:#e8f4ef;
-    background:linear-gradient(168deg,#07221a 0%,#0f3d2e 54%,#11503c 100%);
-    padding:clamp(40px,6vw,68px) 0 clamp(120px,16vw,170px);
+  /* ---------- header ---------- */
+  .head{background:var(--green);color:#dff0e8}
+  .head .wrap{padding-top:26px;padding-bottom:34px}
+  .brand{display:flex;align-items:center;gap:8px;min-width:0}
+  .brand svg{width:22px;height:22px;flex:none}
+  .brand b{font-size:.92rem;font-weight:800;color:#fff;letter-spacing:-.02em;word-break:keep-all}
+  .head h1{
+    color:#fff;font-size:clamp(1.32rem,6vw,1.65rem);font-weight:800;
+    margin:18px 0 8px;word-break:keep-all;
   }
-  .hero__grid,.hero__glow{position:absolute;inset:0;pointer-events:none}
-  .hero__grid{
-    background-image:
-      linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
-      linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
-    background-size:46px 46px;
-    -webkit-mask-image:radial-gradient(circle at 50% 22%,#000 0%,transparent 72%);
-    mask-image:radial-gradient(circle at 50% 22%,#000 0%,transparent 72%);
-    opacity:.7;
-  }
-  .hero__glow{
-    background:
-      radial-gradient(60% 46% at 82% 4%,rgba(16,185,129,.38),transparent 70%),
-      radial-gradient(46% 40% at 8% 92%,rgba(16,185,129,.16),transparent 72%);
-  }
-  .hero__inner{position:relative;text-align:center;max-width:900px;margin-inline:auto}
-  .pill{
-    display:inline-flex;align-items:center;gap:8px;
-    border:1px solid rgba(110,231,183,.34);background:rgba(16,185,129,.13);
-    color:#a7f3d0;border-radius:999px;padding:8px 15px;
-    font-size:.8rem;font-weight:700;letter-spacing:.02em;
-  }
-  .pill i{width:6px;height:6px;border-radius:50%;background:var(--mint-300);box-shadow:0 0 0 4px rgba(110,231,183,.18)}
-  .hero h1{
-    color:#fff;font-size:clamp(1.72rem,4.6vw,3.15rem);font-weight:800;
-    line-height:1.32;margin:20px 0 16px;
-  }
-  .hero h1 .hl{color:var(--mint-300);white-space:nowrap}
-  .lede{
-    color:#c6ded3;font-size:clamp(.98rem,1.7vw,1.08rem);line-height:1.75;
-    max-width:640px;margin:0 auto;
-  }
-  .hero-stats{
-    display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
-    margin:clamp(26px,4vw,38px) auto 0;max-width:760px;text-align:left;
-  }
-  .hstat{
-    background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.09);
-    border-radius:14px;padding:13px 14px;
-  }
-  .hstat b{display:block;color:#fff;font-size:clamp(1.05rem,2.4vw,1.32rem);letter-spacing:-.02em}
-  .hstat span{display:block;color:#a4c3b6;font-size:.75rem;line-height:1.45;margin-top:3px}
-  @media (max-width:640px){.hero-stats{grid-template-columns:1fr;gap:8px}.hstat{display:flex;align-items:baseline;gap:10px;padding:10px 13px}.hstat b{font-size:1.02rem;flex:none}.hstat span{margin-top:0;font-size:.74rem}}
+  .head p{color:#b5cfc3;font-size:.92rem;word-break:keep-all}
 
-  /* ---------- CALCULATOR ---------- */
-  .calc-wrap{position:relative;margin-top:clamp(-150px,-14vw,-100px);z-index:2}
-  .calc{
-    background:var(--card);border:1px solid #dfe8e4;border-radius:var(--r-lg);
-    box-shadow:var(--shadow-lg);padding:clamp(18px,3vw,32px);
+  /* ---------- card ---------- */
+  .main{padding:0 0 8px}
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:20px;
+    box-shadow:0 14px 34px -26px rgba(15,61,46,.45);
+    padding:22px 18px;margin-top:-18px;position:relative;
+    width:100%;max-width:100%;overflow:hidden;
   }
-  .calc-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px;margin-bottom:clamp(16px,2.4vw,24px)}
-  .calc-head h2{font-size:clamp(1.12rem,2.3vw,1.44rem);font-weight:800}
-  .calc-head p{font-size:.85rem;color:var(--muted);margin-top:5px}
-  .tag-time{
-    display:inline-flex;align-items:center;gap:6px;flex:none;
-    background:var(--mint-50);color:#0a6b4e;border:1px solid #c7f0e0;
-    font-size:.76rem;font-weight:800;padding:7px 12px;border-radius:999px;
-  }
-  .calc-grid{display:grid;grid-template-columns:1.04fr .96fr;gap:clamp(20px,3.4vw,34px);align-items:start}
-  @media (max-width:900px){.calc-grid{grid-template-columns:1fr}}
 
-  .field{padding-bottom:20px;margin-bottom:20px;border-bottom:1px dashed var(--line)}
-  .field:last-child{padding-bottom:0;margin-bottom:0;border-bottom:0}
-  .field-label{display:flex;align-items:center;gap:8px;font-weight:800;color:var(--ink);font-size:.93rem;margin-bottom:10px}
-  .step{
-    display:inline-flex;align-items:center;justify-content:center;flex:none;
-    width:22px;height:22px;border-radius:8px;background:var(--green-800);color:#fff;
-    font-size:.74rem;font-weight:800;
+  .field{padding-bottom:20px;margin-bottom:20px;border-bottom:1px solid var(--line)}
+  .field:last-of-type{padding-bottom:0;margin-bottom:0;border-bottom:0}
+  .field-label{
+    display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;
+    font-weight:700;color:var(--ink);font-size:.94rem;margin-bottom:9px;
+    word-break:keep-all;
   }
-  .field-label .opt{font-weight:600;color:var(--muted);font-size:.8rem}
+  .field-label .opt{font-weight:500;color:var(--muted);font-size:.8rem}
 
   .amount-box{
-    display:flex;align-items:center;gap:8px;
-    border:1.5px solid var(--line);border-radius:14px;background:#fbfdfc;
-    padding:6px 14px;transition:border-color .15s,box-shadow .15s;
+    display:flex;align-items:center;gap:6px;min-width:0;width:100%;
+    border:1.5px solid var(--line);border-radius:12px;background:#fbfdfc;
+    padding:2px 12px;transition:border-color .15s,box-shadow .15s;
   }
-  .amount-box:focus-within{border-color:var(--mint);box-shadow:0 0 0 4px rgba(16,185,129,.13);background:#fff}
+  .amount-box:focus-within{border-color:var(--mint);box-shadow:0 0 0 3px rgba(16,185,129,.12);background:#fff}
   .amount-box input{
-    flex:1;min-width:0;border:0;background:transparent;outline:none;
-    font-family:inherit;font-size:clamp(1.3rem,2.6vw,1.55rem);font-weight:800;color:var(--ink);
-    letter-spacing:-.02em;padding:9px 0;font-variant-numeric:tabular-nums;
+    flex:1 1 auto;min-width:0;width:100%;border:0;background:transparent;outline:none;
+    font-family:inherit;font-size:1.35rem;font-weight:800;color:var(--ink);
+    letter-spacing:-.02em;padding:10px 0;font-variant-numeric:tabular-nums;
   }
-  .amount-box input::-webkit-outer-spin-button,.amount-box input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  .amount-box input::-webkit-outer-spin-button,
+  .amount-box input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
   .amount-box input[type=number]{-moz-appearance:textfield;appearance:textfield}
-  .amount-box .unit{font-size:.86rem;font-weight:700;color:var(--muted);flex:none}
-  .amount-eq{margin-top:8px;font-size:.82rem;color:var(--muted)}
-  .amount-eq b{color:var(--green-800)}
+  .amount-box .unit{font-size:.85rem;font-weight:700;color:var(--muted);flex:none}
 
-  input[type=range]{
-    -webkit-appearance:none;appearance:none;width:100%;height:32px;
-    background:transparent;margin:6px 0 0;cursor:pointer;display:block;
-  }
-  input[type=range]::-webkit-slider-runnable-track{
-    height:8px;border-radius:999px;
-    background:linear-gradient(90deg,var(--mint) 0%,var(--mint) var(--pct,45%),#e6ece9 var(--pct,45%),#e6ece9 100%);
-  }
-  input[type=range]::-webkit-slider-thumb{
-    -webkit-appearance:none;width:26px;height:26px;margin-top:-9px;border-radius:50%;
-    background:#fff;border:3px solid var(--mint);box-shadow:0 3px 10px rgba(16,185,129,.45);
-  }
-  input[type=range]::-moz-range-track{height:8px;border-radius:999px;background:#e6ece9}
-  input[type=range]::-moz-range-progress{height:8px;border-radius:999px;background:var(--mint)}
-  input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--mint);box-shadow:0 3px 10px rgba(16,185,129,.45)}
-  input[type=range]:focus-visible{outline:2px solid var(--mint);outline-offset:6px;border-radius:999px}
-
-  .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
   .chip{
-    font-family:inherit;font-size:.8rem;font-weight:700;color:#2c4b3f;
+    font-family:inherit;font-size:.79rem;font-weight:700;color:#3c5348;
     background:#fbfdfc;border:1px solid var(--line);border-radius:999px;
-    padding:7px 12px;cursor:pointer;transition:.15s;line-height:1.2;
+    padding:6px 11px;cursor:pointer;line-height:1.2;transition:.15s;
   }
-  .chip:hover{border-color:var(--mint-400);color:#0a6b4e}
-  .chip.on{background:#e6fbf3;border-color:var(--mint);color:#06654a}
+  .chip:hover{border-color:#8fd9bd;color:#0a6b4e}
+  .chip.on{background:#e9fbf3;border-color:var(--mint);color:#06654a}
 
-  .seg{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;background:#f1f6f3;border-radius:16px;padding:6px}
-  .seg.two{grid-template-columns:repeat(2,1fr)}
-  .seg label{position:relative;cursor:pointer;display:block}
+  .seg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;background:#f1f5f3;border-radius:12px;padding:5px}
+  .seg.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .seg label{position:relative;cursor:pointer;display:block;min-width:0}
   .seg input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer}
   .seg span{
-    display:block;text-align:center;padding:10px 4px;border-radius:11px;
-    font-size:.88rem;font-weight:800;color:#51675d;transition:.15s;
+    display:block;text-align:center;padding:9px 2px;border-radius:8px;
+    font-size:.86rem;font-weight:700;color:#51675d;transition:.15s;word-break:keep-all;
   }
-  .seg input:checked + span{background:var(--green-800);color:#fff;box-shadow:0 8px 16px -10px rgba(15,61,46,.9)}
+  .seg input:checked + span{background:var(--green);color:#fff}
   .seg input:focus-visible + span{outline:2px solid var(--mint);outline-offset:2px}
-  .hint{font-size:.78rem;color:var(--muted);margin-top:9px;line-height:1.55}
 
-  /* ---------- RESULTS ---------- */
-  .results{
-    position:sticky;top:18px;overflow:hidden;border-radius:22px;
-    padding:clamp(18px,2.6vw,26px);color:#e6f3ed;
-    background:
-      radial-gradient(120% 90% at 100% 0%,rgba(16,185,129,.22),transparent 62%),
-      linear-gradient(168deg,#0f3d2e 0%,#0a2b21 100%);
-    box-shadow:0 24px 50px -30px rgba(8,38,29,.7);
-  }
-  @media (max-width:900px){.results{position:static}}
-  .results__head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:4px}
-  .results__head h3{color:#dff3ea;font-size:.82rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
-  .live{display:inline-flex;align-items:center;gap:5px;font-size:.7rem;color:#8fd7bb;font-weight:700}
-  .live i{width:6px;height:6px;border-radius:50%;background:var(--mint-300);animation:pulse 2.4s ease-in-out infinite}
-  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.85)}}
-  @media (prefers-reduced-motion:reduce){.live i{animation:none}}
+  .hint{font-size:.78rem;color:var(--muted);margin-top:8px;word-break:keep-all}
 
-  .res{padding:15px 0;border-bottom:1px solid rgba(255,255,255,.1)}
-  .res__k{display:flex;align-items:center;gap:7px;font-size:.79rem;font-weight:700;color:#9fbdb1}
-  .res__k .badge{background:rgba(110,231,183,.16);color:#8ff0cb;border-radius:6px;padding:1px 6px;font-size:.68rem;font-weight:800}
-  .res__v{
-    font-size:clamp(1.42rem,3.4vw,1.95rem);font-weight:800;color:#fff;
-    letter-spacing:-.03em;line-height:1.25;margin-top:5px;
-    font-variant-numeric:tabular-nums;word-break:keep-all;
+  /* ---------- results ---------- */
+  .result{
+    margin-top:20px;padding:18px;border-radius:14px;background:#f7fbf9;
+    border:1px solid #e2f0ea;min-width:0;
   }
-  .res__v .u{font-size:.66em;font-weight:700;color:#9fe3c8;margin-left:3px}
-  .res--main .res__v{color:var(--mint-300)}
-  .res__note{font-size:.77rem;color:#9bb8ac;margin-top:7px;line-height:1.55}
-  .res__note b{color:#a7f3d0;font-weight:700}
+  .result__row + .result__row{margin-top:14px;padding-top:14px;border-top:1px solid #e2f0ea}
+  .result__k{font-size:.83rem;font-weight:700;color:#4a6357;word-break:keep-all}
+  .result__v{
+    font-size:clamp(1.6rem,8vw,2rem);font-weight:800;color:var(--green);
+    letter-spacing:-.035em;line-height:1.25;margin-top:2px;
+    overflow-wrap:anywhere;word-break:keep-all;
+  }
+  .result__v .u{font-size:.62em;font-weight:700;color:#3f6b58;margin-left:2px}
+  .result__n{font-size:.78rem;color:var(--muted);margin-top:3px;word-break:keep-all}
+  .result__line{
+    margin-top:14px;padding-top:14px;border-top:1px solid #e2f0ea;
+    font-size:.83rem;color:#3c5348;line-height:1.6;word-break:keep-all;
+  }
+  .result__line b{color:var(--green);font-weight:800}
 
-  .bars{margin-top:16px}
-  .bars__t{font-size:.74rem;color:#8fada1;font-weight:700;margin-bottom:9px}
-  .brow{display:grid;grid-template-columns:42px 1fr auto;align-items:center;gap:9px;font-size:.73rem;color:#8fada1;padding:3px 0}
-  .brow .track{height:7px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden}
-  .brow .fill{display:block;height:100%;border-radius:99px;background:rgba(110,231,183,.42);transition:width .35s ease}
-  .brow .valo{font-variant-numeric:tabular-nums;color:#bcd8cc}
-  .brow.on{color:#e8fbf2}
-  .brow.on .fill{background:var(--mint)}
-  .brow.on .valo{color:#fff;font-weight:800}
+  /* ---------- cta ---------- */
+  .cta-box{margin-top:18px;min-width:0}
+  .cta-box h2{font-size:1.02rem;font-weight:800;word-break:keep-all}
+  .cta-box p{font-size:.85rem;color:var(--muted);margin-top:5px;word-break:keep-all}
+  .btn{
+    display:flex;align-items:center;justify-content:center;gap:6px;
+    width:100%;max-width:100%;margin-top:14px;
+    background:var(--mint);color:#04231a;text-decoration:none;
+    font-family:inherit;font-size:1rem;font-weight:800;line-height:1.35;
+    padding:15px 14px;border-radius:13px;border:0;cursor:pointer;text-align:center;
+    box-shadow:0 12px 22px -14px rgba(16,185,129,.8);
+    transition:background .15s,transform .15s;word-break:keep-all;
+  }
+  .btn:hover{background:#0ea875;transform:translateY(-1px)}
+  .btn:active{transform:translateY(0)}
+  .btn:focus-visible{outline:3px solid #a7f3d0;outline-offset:2px}
+  .btn small{font-size:.75rem;font-weight:700;color:#065c43}
+  .btn--stack{flex-direction:column;gap:1px;padding:14px}
 
-  .res-actions{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
-  .cta{
-    display:inline-flex;align-items:center;justify-content:center;gap:8px;
-    background:var(--mint);color:#04231a;font-weight:800;font-size:.98rem;
-    padding:15px 20px;border-radius:15px;text-decoration:none;border:0;cursor:pointer;
-    font-family:inherit;line-height:1.35;text-align:center;
-    box-shadow:0 16px 30px -16px rgba(16,185,129,.85);
-    transition:transform .15s ease,box-shadow .15s ease,background .15s ease;
+  .mail{
+    display:inline-block;margin-top:10px;font-size:.8rem;color:#5c7268;
+    text-decoration:none;border-bottom:1px solid #d7e5de;padding-bottom:1px;
+    max-width:100%;overflow-wrap:anywhere;
   }
-  .cta:hover{transform:translateY(-2px);background:#0ea875;box-shadow:0 20px 34px -16px rgba(16,185,129,.9)}
-  .cta:active{transform:translateY(0)}
-  .cta:focus-visible{outline:3px solid #a7f3d0;outline-offset:3px}
-  .cta--block{display:flex;width:100%;flex-direction:column;gap:2px;padding:17px 20px;font-size:1.02rem}
-  .cta small{font-size:.72rem;font-weight:700;color:#065c43;letter-spacing:0;opacity:.9}
-  .cta--ghost{
-    background:transparent;color:#c9ecdd;border:1px solid rgba(255,255,255,.22);
-    box-shadow:none;font-size:.8rem;padding:10px 14px;border-radius:12px;
-  }
-  .cta--ghost:hover{background:rgba(255,255,255,.08);transform:none;color:#fff}
-  .cta-arrow{font-size:1.05em;line-height:1}
+  .mail:hover{color:#0a6b4e;border-color:#8fd9bd}
+  .fine{margin-top:12px;font-size:.75rem;color:var(--muted);word-break:keep-all}
 
-  .calc-foot{
-    display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:14px;
-    font-size:.76rem;color:var(--muted);
-  }
-  .calc-foot span{display:inline-flex;align-items:center;gap:5px}
-  .calc-foot span::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--mint);flex:none}
-
-  details.formula{margin-top:16px;border-top:1px solid var(--line);padding-top:14px}
-  details.formula summary{
-    cursor:pointer;font-size:.8rem;font-weight:800;color:var(--green-700);
-    list-style:none;display:flex;align-items:center;gap:6px;
-  }
-  details.formula summary::-webkit-details-marker{display:none}
-  details.formula summary::before{content:"＋";font-weight:800}
-  details.formula[open] summary::before{content:"－"}
-  details.formula .fx{font-size:.79rem;color:var(--muted);line-height:1.8;margin-top:10px}
-  details.formula .fx li{margin-bottom:3px}
-  details.formula code{background:#f1f6f3;border-radius:5px;padding:1px 5px;font-size:.94em;color:#14483a;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
-
-  /* ---------- CONVERT (결과 → 증적 전환) ---------- */
-  .convert{
-    margin-top:clamp(18px,3vw,26px);padding:clamp(16px,2.6vw,24px);
-    border:1.5px solid #b7ecda;border-radius:var(--r-md);
-    background:linear-gradient(180deg,#f1fdf8 0%,#ffffff 78%);
-    box-shadow:var(--shadow-sm);
-  }
-  .convert__head h3{font-size:clamp(1rem,2.2vw,1.16rem);font-weight:800;color:var(--ink)}
-  .convert__head .opt{font-weight:600;color:var(--muted);font-size:.86em;white-space:nowrap}
-  .convert__lead{font-size:.86rem;color:var(--muted);line-height:1.65;margin-top:6px;max-width:660px}
-  .convert__lead b{color:#0d3b2c}
-
-  .convert__sum{
-    display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap;
-    margin:14px 0 12px;padding:11px 13px;border-radius:12px;
-    background:#eafaf3;border:1px dashed #a9e8d2;
-  }
-  .convert__sumlab{flex:none;font-size:.7rem;font-weight:800;color:#0a7c59;letter-spacing:.04em}
-  .convert__sumtxt{
-    flex:1 1 240px;min-width:0;font-size:.86rem;font-weight:700;color:#0d3b2c;
-    font-variant-numeric:tabular-nums;line-height:1.5;
-  }
-  .convert__copy{
-    flex:none;font-family:inherit;font-size:.74rem;font-weight:800;color:#0a6b4e;
-    background:#fff;border:1px solid #b7ecda;border-radius:9px;padding:6px 10px;cursor:pointer;
-    transition:border-color .15s,background .15s,color .15s;line-height:1.3;
-  }
-  .convert__copy:hover{background:#0a7c59;border-color:#0a7c59;color:#fff}
-  .convert__copy:disabled{opacity:.8;cursor:default}
-  .convert__copy:focus-visible{outline:2px solid var(--mint);outline-offset:2px}
-
-  .convert__acts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  @media (max-width:640px){.convert__acts{grid-template-columns:1fr}}
-  .convert .cta--line{
-    display:inline-flex;align-items:center;justify-content:center;gap:7px;text-align:center;
-    background:#fff;color:#0d3b2c;border:1.5px solid #b7ecda;box-shadow:none;
-    font-size:.92rem;font-weight:800;padding:14px 16px;border-radius:14px;
-  }
-  .convert .cta--line:hover{background:#f1fdf8;border-color:var(--mint);transform:translateY(-1px)}
-  .convert__note{margin-top:10px;font-size:.75rem;color:var(--muted);line-height:1.6}
-
-  /* ---------- SECTIONS ---------- */
-  .section{padding:clamp(46px,7vw,80px) 0}
-  .section--white{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-  .sec-head{max-width:720px;margin-bottom:clamp(24px,4vw,36px)}
-  .eyebrow{
-    display:inline-block;font-size:.75rem;font-weight:800;letter-spacing:.1em;
-    color:#0a7c59;background:var(--mint-50);border-radius:999px;padding:5px 11px;margin-bottom:12px;
-  }
-  .sec-head h2{font-size:clamp(1.32rem,3.2vw,1.95rem);font-weight:800;line-height:1.35}
-  .sec-head p{margin-top:10px;color:var(--muted);font-size:.92rem;line-height:1.7}
-
-  .compare{background:#fff;border:1px solid var(--line);border-radius:var(--r-md);padding:clamp(14px,2.4vw,22px);box-shadow:var(--shadow-sm)}
-  .crow{
-    display:grid;grid-template-columns:104px 1fr 92px;align-items:center;gap:12px;
-    padding:9px 0;border-bottom:1px solid #f0f4f2;font-size:.88rem;
-  }
-  .crow:last-child{border-bottom:0}
-  .crow .nm{font-weight:800;color:var(--ink);display:flex;align-items:center;gap:6px}
-  .crow .tr{height:10px;border-radius:99px;background:#f0f4f2;overflow:hidden}
-  .crow .fl{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#9fd8c4,#7fcbb0);transition:width .6s ease}
-  .crow .dd{text-align:right;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;font-size:.86rem}
-  .crow--field .fl{background:linear-gradient(90deg,var(--mint),#0ea875)}
-  .crow--field .nm{color:#0a7c59}
-  .crow .mini{font-size:.62rem;font-weight:800;color:#0a7c59;background:var(--mint-50);border:1px solid #cdf1e4;border-radius:5px;padding:1px 4px}
-  .crow--avg{margin-top:6px;border-top:1px dashed var(--line);padding-top:12px;font-weight:700}
-  .src-note{font-size:.75rem;color:var(--muted);line-height:1.7;margin-top:14px}
-  .src-note b{color:#3d5749}
-  @media (max-width:560px){
-    .crow{grid-template-columns:84px 1fr 72px;gap:9px;font-size:.83rem}
-    .crow .dd{font-size:.82rem}
-  }
-
-  .cost-list{display:grid;gap:9px}
-  .cost{
-    display:grid;grid-template-columns:1fr auto;align-items:center;gap:6px 14px;
-    background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 16px;
-    box-shadow:var(--shadow-sm);
-  }
-  .cost__n{font-weight:800;color:var(--ink);font-size:.94rem;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-  .cost__n .flag{font-size:.66rem;font-weight:800;color:#8a6d00;background:#fff8e1;border:1px solid #ffe9a8;border-radius:5px;padding:1px 5px}
-  .cost__n .flag.blue{color:#075985;background:#eff8ff;border-color:#c8e7fb}
-  .cost__d{grid-column:1;font-size:.78rem;color:var(--muted);line-height:1.5}
-  .cost__r{grid-row:1 / span 2;text-align:right;flex:none}
-  .cost__r b{display:block;font-size:1.02rem;font-weight:800;color:var(--green-800);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
-  .cost__r span{font-size:.7rem;color:var(--muted)}
-  .cost--hi{border-color:#b7ecda;background:linear-gradient(180deg,#f4fdf9,#fff)}
-  .cost--hi .cost__r b{color:#0a7c59}
-
-  .offer-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  @media (max-width:760px){.offer-grid{grid-template-columns:1fr}}
-  .offer{
-    position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--r-md);
-    padding:clamp(18px,2.6vw,26px);box-shadow:var(--shadow-sm);
-  }
-  .offer__no{
-    display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;
-    border-radius:10px;background:var(--green-800);color:#fff;font-weight:800;font-size:.9rem;margin-bottom:12px;
-  }
-  .offer h3{font-size:1.06rem;font-weight:800;margin-bottom:7px}
-  .offer p{font-size:.87rem;color:var(--muted);line-height:1.7}
-  .offer .mini-tag{display:inline-block;margin-top:12px;font-size:.72rem;font-weight:800;color:#0a7c59;background:var(--mint-50);border:1px solid #cdf1e4;border-radius:7px;padding:3px 8px}
-
-  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
-  @media (max-width:760px){.steps{grid-template-columns:1fr}}
-  .stepcard{background:#f9fcfb;border:1px solid var(--line);border-radius:14px;padding:16px}
-  .stepcard .k{font-size:.7rem;font-weight:800;color:#0a7c59;letter-spacing:.06em;margin-bottom:6px}
-  .stepcard b{display:block;font-size:.94rem;color:var(--ink);margin-bottom:4px}
-  .stepcard span{font-size:.8rem;color:var(--muted);line-height:1.6}
-
-  .final{
-    position:relative;overflow:hidden;border-radius:var(--r-lg);
-    background:linear-gradient(160deg,#0b2f24 0%,#0f3d2e 58%,#13573f 100%);
-    color:#e8f4ef;padding:clamp(26px,5vw,52px);text-align:center;
-    box-shadow:var(--shadow-lg);
-  }
-  .final::after{
-    content:"";position:absolute;inset:-40% -10% auto auto;width:420px;height:420px;border-radius:50%;
-    background:radial-gradient(closest-side,rgba(16,185,129,.34),transparent 70%);
-  }
-  .final__inner{position:relative;max-width:640px;margin-inline:auto}
-  .final h2{color:#fff;font-size:clamp(1.3rem,3.2vw,1.85rem);line-height:1.4}
-  .final p{color:#bfd9ce;font-size:.92rem;margin:12px auto 22px;line-height:1.7;max-width:520px}
-  .final .cta{min-width:min(100%,340px)}
-  .final .micro{margin-top:14px;font-size:.77rem;color:#9dbcb0}
-
-  footer{padding:clamp(28px,4vw,42px) 0 42px;color:var(--muted);font-size:.8rem}
-  .foot-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:16px}
-  .brand{display:flex;align-items:center;gap:10px}
-  .brand__mark{
-    width:34px;height:34px;border-radius:10px;background:var(--green-800);
-    display:grid;place-items:center;flex:none;
-  }
-  .brand__mark svg{width:18px;height:18px}
-  .brand b{display:block;color:var(--ink);font-size:.92rem;font-weight:800;letter-spacing:-.02em}
-  .brand span{font-size:.74rem;color:var(--muted)}
-  .foot-links{display:flex;gap:14px;font-size:.78rem}
-  .foot-links a{color:#0a7c59;font-weight:700;text-decoration:none;border-bottom:1px solid #cdeee2}
-  .disclaimer{font-size:.73rem;line-height:1.75;color:#7c8f86}
-  .disclaimer b{color:#5d7268}
-
-  /* ---------- mobile sticky CTA ---------- */
-  .sticky-cta{
-    display:none;position:fixed;left:0;right:0;bottom:0;z-index:60;
-    padding:9px 14px calc(9px + env(safe-area-inset-bottom));
-    background:rgba(9,38,29,.94);backdrop-filter:blur(10px);
-    border-top:1px solid rgba(255,255,255,.1);
-  }
-  .sticky-cta .cta{width:100%;padding:14px 16px;font-size:.95rem;border-radius:13px}
-  @media (max-width:900px){
-    .sticky-cta{display:block}
-    body{padding-bottom:88px}
-    .results{position:static}
-  }
+  /* ---------- footer ---------- */
+  footer{margin-top:26px;padding:20px 0 30px;border-top:1px solid var(--line)}
+  footer .brand b{color:var(--ink)}
+  footer p{font-size:.74rem;color:#8b9a92;line-height:1.7;margin-top:8px;word-break:keep-all}
 </style>
 </head>
 <body>
 
-<header class="hero">
-  <div class="hero__grid" aria-hidden="true"></div>
-  <div class="hero__glow" aria-hidden="true"></div>
-  <div class="wrap hero__inner">
-    <span class="pill"><i aria-hidden="true"></i>산지유통인 · 중도매인 10초 자가진단</span>
-    <h1>산지 납품·매입 후 30~60일 묶이는 정산금,<br><span class="hl">1년에 얼마 손해</span> 보고 계신가요?</h1>
-    <p class="lede">
-      월 납품액과 정산 주기만 넣으면 <b>10초</b> 만에 ① 묶여 있는 운전자금 ② 연간 금융·할인 비용
-      ③ 줄일 수 있는 금액이 계산됩니다. 계산 후 <b>정산서 1건 무료 AI 누락 점검</b>으로 바로 이어집니다.
-    </p>
-    <div class="hero-stats">
-      <div class="hstat">
-        <b class="num">60일</b>
-        <span>법정 지급기한(직매입) · 2027.10.14부터 35일로 단축</span>
-      </div>
-      <div class="hstat">
-        <b class="num">53.2일</b>
-        <span>공정위 조사 늑장 지급 9개사 평균 지급기간</span>
-      </div>
-      <div class="hstat">
-        <b class="num">연 6.1%</b>
-        <span>1% 차감·60일 정산 = 은행 어음할인 연 6%와 같은 수준</span>
-      </div>
+<header class="head">
+  <div class="wrap">
+    <div class="brand">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><path d="M22 76V30h13v46H22zm21 0V40h13v36H43zm21 0V50h13v26H64z" fill="#10b981"/></svg>
+      <b>좋은농장 (NiceFarm)</b>
     </div>
+    <h1>정산 기다리는 동안,<br>내 돈은 얼마나 묶여 있을까요</h1>
+    <p>월 납품액과 정산 주기만 넣으면 바로 계산됩니다.</p>
   </div>
 </header>
 
-<main>
-  <!-- 계산기 -->
-  <section class="calc-wrap" id="calculator">
-    <div class="wrap">
-      <div class="calc">
-        <div class="calc-head">
-          <div>
-            <h2>10초 정산 손실 자가계산기</h2>
-            <p>숫자 3개만 넣어 보세요. 결과는 입력하는 즉시 바뀝니다.</p>
-          </div>
-          <span class="tag-time">⏱ 약 10초</span>
-        </div>
-
-        <div class="calc-grid">
-          <form class="inputs" id="calcForm" autocomplete="off" onsubmit="return false;">
-            <!-- ① 월 납품액 -->
-            <div class="field">
-              <label class="field-label" for="amount">
-                <span class="step" aria-hidden="true">1</span>월 평균 납품·매입액
-                <span class="opt">(만 원)</span>
-              </label>
-              <div class="amount-box">
-                <input id="amount" type="text" inputmode="numeric" value="10,000"
-                       aria-describedby="amountEq">
-                <span class="unit">만 원</span>
-              </div>
-              <p class="amount-eq" id="amountEq">월 <b>1억 원</b> · 연 <b>12억 원</b></p>
-              <input id="amountRange" type="range" min="0" max="1000" step="1" value="470"
-                     aria-label="월 평균 납품·매입액 조절">
-              <div class="chips" id="amountChips">
-                <button type="button" class="chip" data-v="5000">5천만 원</button>
-                <button type="button" class="chip" data-v="10000">1억 원</button>
-                <button type="button" class="chip" data-v="30000">3억 원</button>
-                <button type="button" class="chip" data-v="100000">10억 원</button>
-                <button type="button" class="chip" data-v="300000">30억 원</button>
-              </div>
-            </div>
-
-            <!-- ② 정산 주기 -->
-            <div class="field">
-              <span class="field-label" id="cycleLabel">
-                <span class="step" aria-hidden="true">2</span>주요 거래처 정산 주기
-              </span>
-              <div class="seg" role="radiogroup" aria-labelledby="cycleLabel">
-                <label><input type="radio" name="cycle" value="15"><span>15일</span></label>
-                <label><input type="radio" name="cycle" value="30"><span>30일</span></label>
-                <label><input type="radio" name="cycle" value="45"><span>45일</span></label>
-                <label><input type="radio" name="cycle" value="60" checked><span>60일</span></label>
-              </div>
-              <p class="hint" id="cycleHint">납품일부터 입금일까지 실제로 걸리는 날짜 기준입니다. 공정위 조사에서 쿠팡은 평균 52.3일, 컬리 54.6일이었습니다.</p>
-            </div>
-
-            <!-- ③ 비용 -->
-            <div class="field">
-              <span class="field-label" id="costLabel">
-                <span class="step" aria-hidden="true">3</span>현재 비용
-                <span class="opt">(선정산 수수료 또는 조달 금리)</span>
-              </span>
-              <div class="seg two" role="radiogroup" aria-labelledby="costLabel">
-                <label><input type="radio" name="mode" value="fee" checked><span>1회 차감 %</span></label>
-                <label><input type="radio" name="mode" value="rate"><span>연 이자 %</span></label>
-              </div>
-              <div class="amount-box" style="margin-top:10px">
-                <input id="cost" type="number" inputmode="decimal" min="0" max="40" step="0.1" value="1"
-                       aria-describedby="costHint">
-                <span class="unit" id="costUnit">%</span>
-              </div>
-              <p class="hint" id="costHint">정산금에서 1회 떼이는 비율입니다. 현장 실측 사례: 쿠팡 60일 정산에서 1% 차감.</p>
-              <div class="chips" id="costChips"></div>
-            </div>
-          </form>
-
-          <!-- 결과 -->
-          <div class="results">
-            <div class="results__head">
-              <h3>진단 결과</h3>
-              <span class="live"><i aria-hidden="true"></i>실시간</span>
-            </div>
-
-            <div class="res">
-              <div class="res__k">① 지금 묶여 있는 평균 운전자금</div>
-              <div class="res__v"><span id="rCapital">2억 원</span></div>
-              <div class="res__note" id="rCapitalNote">60일치 납품 대금이 상시로 묶여 있는 셈입니다.</div>
-            </div>
-
-            <div class="res res--main">
-              <div class="res__k">② 연간 금융·할인 비용 손실 <span class="badge">가장 큰 손실</span></div>
-              <div class="res__v"><span id="rCost">1,217만 원</span></div>
-              <div class="res__note" id="rCostNote">1회 1% 차감을 60일 사용 → <b>연 6.08%</b> 환산.</div>
-            </div>
-
-            <div class="res">
-              <div class="res__k" id="rSaveK">③ 정산 주기를 30일로 줄이면</div>
-              <div class="res__v"><span id="rSave">608만 원</span><span class="u" id="rSaveUnit">절감 추정</span></div>
-              <div class="res__note" id="rSaveNote">묶이는 자금이 1억 원 줄어듭니다.</div>
-            </div>
-
-            <div class="bars">
-              <p class="bars__t">정산 주기별 묶이는 자금</p>
-              <div id="bars"></div>
-            </div>
-
-            <div class="res-actions">
-              <a class="cta cta--block" style="flex:1 1 100%"
-                 href="https://forms.gle/wB7M9gDrPymoHdC86" target="_blank" rel="noopener noreferrer">
-                <span>내 정산서 1건 무료 AI 진단 &amp; 비교 리포트 받기 <span class="cta-arrow" aria-hidden="true">→</span></span>
-                <small>1분 · 계약·도입 의무 없음 · 영업 전화 없음</small>
-              </a>
-              <button type="button" class="cta cta--ghost" id="copyBtn">계산 결과 복사</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- 결과 → 무료 비교표 전환 CTA -->
-        <div class="convert" id="convertBox">
-          <div class="convert__head">
-            <h3>내 계산 결과로 무료 비교표 받기 <span class="opt">(1분 체크)</span></h3>
-            <p class="convert__lead">
-              지금 계산한 <b>월 납품액 · 정산 주기 · 수수료율</b>을 그대로 넘겨주시면, 같은 기준으로
-              채널별 수수료 비교표와 정산 누락 점검 결과를 만들어 회신드립니다. 정산서는 1건이면 되고,
-              거래처·단가는 가리셔도 됩니다.
-            </p>
-          </div>
-
-          <div class="convert__sum">
-            <span class="convert__sumlab">내 결과</span>
-            <p class="convert__sumtxt" id="sumLine">월 1억 원 납품 · 60일 정산 · 1회 1% 차감(연 6.08%) → 묶인 운전자금 2억 원 · 연 손실 1,217만 원</p>
-            <button type="button" class="convert__copy" id="copyLineBtn">한 줄 복사</button>
-          </div>
-
-          <div class="convert__acts">
-            <a class="cta cta--block" id="formBtn" href="https://forms.gle/wB7M9gDrPymoHdC86" target="_blank" rel="noopener noreferrer">
-              <span>1분 폼으로 받기 <span class="cta-arrow" aria-hidden="true">→</span></span>
-              <small>1분 · 계약·도입 의무 없음 · 영업 전화 없음</small>
-            </a>
-            <a class="cta cta--line" id="mailBtn" href="mailto:silverstrom@naver.com?subject=%EC%A0%95%EC%82%B0%20%EB%B9%84%EA%B5%90%ED%91%9C%20%EC%9A%94%EC%B2%AD%20%C2%B7%20%EC%9B%94%201%EC%96%B5%20%EC%9B%90%20%C2%B7%2060%EC%9D%BC%20%EC%A0%95%EC%82%B0&amp;body=%EC%95%88%EB%85%95%ED%95%98%EC%84%B8%EC%9A%94.%20%EA%B3%84%EC%82%B0%EA%B8%B0%EC%97%90%EC%84%9C%20%EB%82%98%EC%98%A8%20%EC%A0%9C%20%EC%A1%B0%EA%B1%B4%EC%9E%85%EB%8B%88%EB%8B%A4.%0D%0A%EC%9B%94%20%EB%82%A9%ED%92%88%EC%95%A1%201%EC%96%B5%20%EC%9B%90%20%C2%B7%20%EC%A0%95%EC%82%B0%20%EC%A3%BC%EA%B8%B0%2060%EC%9D%BC%20%C2%B7%201%ED%9A%8C%201%25%20%EC%B0%A8%EA%B0%90%20%28%EC%97%B0%206.08%25%20%ED%99%98%EC%82%B0%29%0D%0A%E2%86%92%20%EB%AC%B6%EC%9D%B8%20%EC%9A%B4%EC%A0%84%EC%9E%90%EA%B8%88%202%EC%96%B5%20%EC%9B%90%20%C2%B7%20%EC%97%B0%20%EA%B8%88%EC%9C%B5%C2%B7%ED%95%A0%EC%9D%B8%20%EC%86%90%EC%8B%A4%201%2C217%EB%A7%8C%20%EC%9B%90%0D%0A%0D%0A%EC%9D%B4%20%EC%A1%B0%EA%B1%B4%EC%9C%BC%EB%A1%9C%20%EC%B1%84%EB%84%90%EB%B3%84%20%EC%88%98%EC%88%98%EB%A3%8C%20%EB%B9%84%EA%B5%90%ED%91%9C%EB%A5%BC%20%EB%B0%9B%EC%95%84%EB%B3%B4%EA%B3%A0%20%EC%8B%B6%EC%8A%B5%EB%8B%88%EB%8B%A4.%0D%0A%EC%A2%8B%EC%9D%80%EB%86%8D%EC%9E%A5%28NiceFarm%29%20%EA%B3%84%EC%82%B0%EA%B8%B0%EC%97%90%EC%84%9C%20%EB%B3%B4%EB%83%84">
-              <span aria-hidden="true">✉</span> 이메일로 2줄만 보내기
-            </a>
-          </div>
-          <p class="convert__note">
-            메일은 계산 결과 2줄이 미리 채워진 채로 열립니다. 내용을 확인하고 보내기만 누르시면 됩니다.
-            폼·메일 모두 회신은 좋은농장(NiceFarm) 명의로 드립니다.
-          </p>
-        </div>
-
-        <div class="calc-foot">
-          <span>정산서 1건(거래처·단가 가림 가능)이면 충분</span>
-          <span>영업 전화 없음</span>
-          <span>결과는 추정치, 실제 조건은 계약 기준</span>
-        </div>
-
-        <noscript>
-          <p style="margin-top:12px;font-size:.82rem;color:#8a5b00;background:#fff8e1;border:1px solid #ffe9a8;border-radius:10px;padding:10px 12px">
-            브라우저에서 자바스크립트가 꺼져 있어 계산기가 동작하지 않습니다. 아래 버튼으로 무료 진단을 바로 신청하실 수 있습니다.
-            <a href="https://forms.gle/wB7M9gDrPymoHdC86" target="_blank" rel="noopener noreferrer" style="color:#0a6b4e;font-weight:800">무료 진단 신청 →</a>
-          </p>
-        </noscript>
-
-        <details class="formula">
-          <summary>계산식 공개 (어떻게 나온 숫자인가)</summary>
-          <div class="fx">
-            <ul style="margin:0;padding-left:18px">
-              <li>평균 묶인 운전자금 = 월 납품액 × 정산 주기 ÷ 30 (월 매출을 일평균으로 환산해 정산 기간만큼 묶인 금액)</li>
-              <li>1회 차감형의 연 환산 이율 = 1회 차감률 × 365 ÷ 정산 주기 <span class="num">(예: 1% × 365 ÷ 60일 = 6.08%)</span></li>
-              <li>연간 비용 = 묶인 운전자금 × 연 환산 이율</li>
-              <li>단축 절감액 = (현재 묶인 자금 − 단축 후 묶인 자금) × 연 환산 이율</li>
-              <li>세금·부가세, 반품·공제, 계절성(출하 성수기)은 반영하지 않은 단순 추정치입니다. 정산서 1건을 보내주시면 실제 공제 항목까지 대사해 드립니다.</li>
-            </ul>
-          </div>
-        </details>
-      </div>
-    </div>
-  </section>
-
-  <!-- 비교표 1 -->
-  <section class="section">
-    <div class="wrap">
-      <div class="sec-head">
-        <span class="eyebrow">실제 현장 비교</span>
-        <h2>“관행이니까 60일”이라고요?<br>공정위 조사 9개사 평균은 53.2일입니다</h2>
-        <p>공정거래위원회 2025년 상반기 대금지급 서면실태조사(2025.12.24 발표)에 나온 유통사별 평균 지급기간입니다. 법정 상한(직매입 60일)에 맞춰 지급하는 9개사 평균은 53.2일이었습니다.</p>
-      </div>
-
-      <div class="compare">
-        <div class="crow"><span class="nm">쿠팡</span><div class="tr"><i class="fl" style="width:74.7%"></i></div><span class="dd">52.3일</span></div>
-        <div class="crow"><span class="nm">컬리</span><div class="tr"><i class="fl" style="width:78%"></i></div><span class="dd">54.6일</span></div>
-        <div class="crow"><span class="nm">홈플러스</span><div class="tr"><i class="fl" style="width:66%"></i></div><span class="dd">46.2일</span></div>
-        <div class="crow"><span class="nm">다이소</span><div class="tr"><i class="fl" style="width:84.4%"></i></div><span class="dd">59.1일</span></div>
-        <div class="crow"><span class="nm">영풍문고</span><div class="tr"><i class="fl" style="width:93%"></i></div><span class="dd">65.1일</span></div>
-        <div class="crow crow--field">
-          <span class="nm">대형마트(이마트) <span class="mini">현장</span></span>
-          <div class="tr"><i class="fl" style="width:42.9%"></i></div><span class="dd">30일 이내</span>
-        </div>
-        <div class="crow crow--avg">
-          <span class="nm" style="font-size:.82rem">늑장 지급 9개사 평균</span>
-          <div class="tr"><i class="fl" style="width:76%"></i></div><span class="dd">53.2일</span>
-        </div>
-      </div>
-
-      <p class="src-note">
-        <b>출처</b> 공정거래위원회 「유통분야 대금지급기한 개선방안」(2025.12.24 발표, 2025년 상반기 실태조사) ·
-        법정기한: 대규모유통업법 §8 — 직매입 60일, 특약매입·위수탁 40일, 초과 시 연 15.5% 지연이자.<br>
-        <b>2027년 10월 14일부터</b> 직매입 35일·특약매입 20일로 단축 시행됩니다(2026.9.17 국회 통과).
-        대형마트 30일 이내·은행 어음할인 연 6% 수준은 2026.11.23 산지 유통법인 대표 인터뷰 진술로, 공적 통계가 아닙니다.
-      </p>
-    </div>
-  </section>
-
-  <!-- 비교표 2 -->
-  <section class="section section--white">
-    <div class="wrap">
-      <div class="sec-head">
-        <span class="eyebrow">돈을 당겨 쓰는 비용</span>
-        <h2>그 자금을 메우는 비용은<br>채널마다 두 배 넘게 차이 납니다</h2>
-        <p>공개된 공식 요율만 모았습니다. 같은 “1,000만 원을 한 달 먼저 받는 일”도 방식에 따라 비용이 3만 원에서 16만 원까지 벌어집니다.</p>
-      </div>
-
-      <div class="cost-list">
-        <div class="cost">
-          <div class="cost__n">기보 중소기업팩토링 <span class="flag">한도 소진</span></div>
-          <div class="cost__r"><b>연 1.5~4.2%</b><span>기술보증기금</span></div>
-          <div class="cost__d">가장 저렴하지만 2026년 운영한도 1,000억 원이 10월 27일 조기 소진됐습니다.</div>
-        </div>
-        <div class="cost">
-          <div class="cost__n">쿠팡 빠른정산 <span class="flag blue">해당 채널만</span></div>
-          <div class="cost__r"><b>30일 0.3%</b><span>연 3.7% 환산</span></div>
-          <div class="cost__d">구매확정 다음 날 90% 지급. 하나은행 계좌·판매자 일부 조건이며 쿠팡 매출에만 적용됩니다.</div>
-        </div>
-        <div class="cost cost--hi">
-          <div class="cost__n">쿠팡 직매입 1% 차감 <span class="flag">현장 실측</span></div>
-          <div class="cost__r"><b>연 6.1%</b><span>60일 기준 환산</span></div>
-          <div class="cost__d">산지 유통법인 대표 진술(2026.11.23). 연 150억 할인 시 수수료 약 1억 5천만 원.</div>
-        </div>
-        <div class="cost">
-          <div class="cost__n">은행 외담대·상생결제</div>
-          <div class="cost__r"><b>연 5.785~13%</b><span>하나은행 2026.07.03 공시</span></div>
-          <div class="cost__d">담보·재무 심사와 채권양도 통지가 필요하고, 판매기업 명의 부채로 계상됩니다.</div>
-        </div>
-        <div class="cost">
-          <div class="cost__n">핀테크 선정산 (KG파이낸셜 등)</div>
-          <div class="cost__r"><b>1회 0.9~1.6%</b><span>60일 사용 시 연 5.5~9.7%</span></div>
-          <div class="cost__d">신청 당일 입금. 개인 1억·법인 3억 한도. 기간과 무관하게 1회 부과됩니다.</div>
-        </div>
-        <div class="cost">
-          <div class="cost__n">저축은행 할인어음</div>
-          <div class="cost__r"><b>연 4.5~20%</b><span>3사 공시 2026.01~09</span></div>
-          <div class="cost__d">어음 발행인 신용에 따라 요율이 갈리고, 부도 시 상환청구권이 있습니다.</div>
-        </div>
-      </div>
-
-      <p class="src-note">
-        <b>출처</b> 기술보증기금 중소기업팩토링 안내 및 접수 마감 공지(2026.10.27) · 쿠팡 셀러월렛 빠른정산 안내 ·
-        KG파이낸셜 선정산 FAQ · 하나은행 상품공시(2026.07.03) · 저축은행 3사 상품공시.<br>
-        기보 요율은 중소기업 기준, 쿠팡 빠른정산 수수료는 기준금리에 연동돼 변동됩니다. 실제 적용 요율은 금융사 심사 결과에 따릅니다.
-      </p>
-    </div>
-  </section>
-
-  <!-- 무료 혜택 -->
-  <section class="section">
-    <div class="wrap">
-      <div class="sec-head">
-        <span class="eyebrow">무료로 받는 두 가지</span>
-        <h2>계산은 손실 규모까지입니다.<br>어디서 새는지는 정산서로 확인합니다</h2>
-        <p>1분 응답이면 귀사의 납품 환경에 맞춰 두 가지 자료를 비용 없이 만들어 보내드립니다.</p>
-      </div>
-
-      <div class="offer-grid">
-        <div class="offer">
-          <div class="offer__no">1</div>
-          <h3>정산 누락·공제 오류 AI 무료 진단 (1건)</h3>
-          <p>거래처·단가를 가리신 정산서(엑셀·PDF·캡처) 1~2개월 치를 기준으로, 납품 내역과 3자 대사한 결과표를 만들어 회신드립니다. 단가·수량·공제 항목에서 실제로 빠진 금액을 찾는 작업입니다.</p>
-          <span class="mini-tag">정산서 1건이면 충분</span>
-        </div>
-        <div class="offer">
-          <div class="offer__no">2</div>
-          <h3>채널별 수수료 비교 리포트</h3>
-          <p>이마트·쿠팡·컬리·은행권·정책자금까지, 조기정산 비용을 같은 기준(1,000만 원·30일)으로 환산해 한 장으로 비교해 드립니다. 지금 쓰는 방식이 비싼지 싼지를 숫자로 확인하실 수 있습니다.</p>
-          <span class="mini-tag">현장 실측 + 공식 요율</span>
-        </div>
-      </div>
-
-      <div class="steps">
-        <div class="stepcard">
-          <div class="k">STEP 1</div>
-          <b>계산기로 손실 규모 확인</b>
-          <span>방금 위에서 계산한 숫자가 상담의 출발점입니다.</span>
-        </div>
-        <div class="stepcard">
-          <div class="k">STEP 2</div>
-          <b>1분 폼 응답</b>
-          <span>정산 소요일·자금 공백 경험 등 5문항. 휴대폰으로 1분이면 끝납니다.</span>
-        </div>
-        <div class="stepcard">
-          <div class="k">STEP 3</div>
-          <b>진단 결과·비교 리포트 회신</b>
-          <span>누락·오차 항목과 채널별 비용을 정리해 보내드립니다.</span>
-        </div>
-      </div>
-
-      <div class="final" style="margin-top:clamp(24px,5vw,40px)">
-        <div class="final__inner">
-          <h2>정산서 1건으로<br>숨은 손실부터 확인해 보세요</h2>
-          <p>계약도, 도입 의무도 없습니다. 전화 영업도 하지 않습니다. 필요한 자료만 보내주시면 결과표와 비교 리포트로 답을 드립니다.</p>
-          <a class="cta cta--block" href="https://forms.gle/wB7M9gDrPymoHdC86" target="_blank" rel="noopener noreferrer">
-            <span>내 정산서 1건 무료 AI 진단 &amp; 비교 리포트 받기 <span class="cta-arrow" aria-hidden="true">→</span></span>
-            <small>1분 · 무료 · 영업 전화 없음</small>
-          </a>
-          <p class="micro">좋은농장(NiceFarm)</p>
-        </div>
-      </div>
-    </div>
-  </section>
-</main>
-
-<footer>
+<main class="main">
   <div class="wrap">
-    <div class="foot-top">
-      <div class="brand">
-        <span class="brand__mark" aria-hidden="true">
-          <svg viewBox="0 0 100 100" fill="none"><path d="M22 76V30h13v46H22zm21 0V40h13v36H43zm21 0V50h13v26H64z" fill="#10b981"/></svg>
-        </span>
-        <span>
-          <b>좋은농장 (NiceFarm)</b>
-          <span>농산물 유통 증거·정산 검증 · 좋은농장(NiceFarm)</span>
-        </span>
-      </div>
-      <div class="foot-links">
-        <a href="https://forms.gle/wB7M9gDrPymoHdC86" target="_blank" rel="noopener noreferrer">무료 진단 신청</a>
-        <a href="#calculator">계산기 다시 하기</a>
-      </div>
-    </div>
-    <p class="disclaimer">
-      <b>안내</b> · 이 페이지의 계산 결과는 입력값을 바탕으로 한 추정치이며, 실제 정산 조건·수수료는 거래처 및 금융사 계약에 따릅니다.
-      공정위 지급기간은 2025년 상반기 서면실태조사(2025.12.24 발표) 기준, 금융 요율은 각 기관 공시 기준일(2026.07.03~2026.11) 기준입니다.
-      대형마트 30일·쿠팡 1% 차감은 2026.11.23 현장 인터뷰 진술로 공적 통계가 아닙니다.
-      본 페이지는 특정 금융상품의 광고·중개가 아니며, 진단 신청은 무료이고 계약·도입 의무가 없습니다.
-    </p>
-  </div>
-</footer>
+    <div class="card">
 
-<div class="sticky-cta">
-  <a class="cta" href="https://forms.gle/wB7M9gDrPymoHdC86" target="_blank" rel="noopener noreferrer">
-    정산서 1건 무료 AI 진단 받기 <span class="cta-arrow" aria-hidden="true">→</span>
-  </a>
-</div>
+      <form id="calcForm" autocomplete="off" onsubmit="return false;">
+
+        <div class="field">
+          <label class="field-label" for="amount">월 평균 납품·매입액 <span class="opt">(만 원)</span></label>
+          <div class="amount-box">
+            <input id="amount" type="text" inputmode="numeric" value="10,000" aria-label="월 평균 납품·매입액 (만 원)">
+            <span class="unit">만 원</span>
+          </div>
+          <div class="chips" id="amountChips">
+            <button type="button" class="chip" data-v="5000">5천만</button>
+            <button type="button" class="chip" data-v="10000">1억</button>
+            <button type="button" class="chip" data-v="30000">3억</button>
+            <button type="button" class="chip" data-v="100000">10억</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-label" id="cycleLabel">정산 주기 <span class="opt">납품일부터 입금일까지</span></span>
+          <div class="seg" role="radiogroup" aria-labelledby="cycleLabel">
+            <label><input type="radio" name="cycle" value="15"><span>15일</span></label>
+            <label><input type="radio" name="cycle" value="30"><span>30일</span></label>
+            <label><input type="radio" name="cycle" value="45"><span>45일</span></label>
+            <label><input type="radio" name="cycle" value="60" checked><span>60일</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-label" id="costLabel">지금 드는 비용</span>
+          <div class="seg two" role="radiogroup" aria-labelledby="costLabel">
+            <label><input type="radio" name="mode" value="fee" checked><span>1회 차감 %</span></label>
+            <label><input type="radio" name="mode" value="rate"><span>연 이자 %</span></label>
+          </div>
+          <div class="amount-box" style="margin-top:9px">
+            <input id="cost" type="number" inputmode="decimal" min="0" max="40" step="0.1" value="1" aria-label="수수료 또는 이자율 (%)">
+            <span class="unit">%</span>
+          </div>
+          <p class="hint" id="costHint">정산금에서 한 번 떼이는 비율입니다. (예: 60일 정산에서 1% 차감)</p>
+        </div>
+      </form>
+
+      <div class="result" aria-live="polite">
+        <div class="result__row">
+          <div class="result__k">지금 묶여 있는 돈</div>
+          <div class="result__v"><span id="rCapital">2억 원</span></div>
+          <div class="result__n" id="rCapitalNote">60일치 납품 대금이 늘 묶여 있습니다.</div>
+        </div>
+        <div class="result__row">
+          <div class="result__k">1년에 드는 비용</div>
+          <div class="result__v"><span id="rCost">1,217만 원</span></div>
+          <div class="result__n" id="rCostNote">1회 1% 차감을 60일 → 연 6.08%로 환산</div>
+        </div>
+        <p class="result__line" id="rSaveLine">정산 주기를 30일로 줄이면 1년에 <b>608만 원</b>을 아낄 수 있습니다.</p>
+      </div>
+
+      <div class="cta-box">
+        <h2>내 조건으로 비교표 받기</h2>
+        <p>지금 계산한 조건 그대로 보내주시면, 채널별 정산 수수료 비교표를 만들어 회신드립니다. 정산서 1건을 보내주시면 새는 돈도 함께 확인해 드립니다.</p>
+        <a class="btn btn--stack" href="https://forms.gle/wB7M9gDrPymoHdC86" target="_blank" rel="noopener noreferrer">
+          <span>무료로 받아보기 (1분 설문) →</span>
+          <small>계약·도입 의무 없음 · 영업 전화 없음</small>
+        </a>
+        <a class="mail" id="mailBtn" href="mailto:silverstrom@naver.com">설문 대신 이메일로 2줄만 보내기</a>
+        <p class="fine">메일은 계산 결과가 미리 채워진 채로 열립니다.</p>
+      </div>
+
+      <noscript>
+        <p style="margin-top:14px;font-size:.82rem;color:#8a5b00;background:#fff8e1;border:1px solid #ffe9a8;border-radius:10px;padding:10px 12px">
+          계산기를 쓰려면 자바스크립트가 필요합니다.
+          <a href="https://forms.gle/wB7M9gDrPymoHdC86" target="_blank" rel="noopener noreferrer" style="color:#0a6b4e;font-weight:800">무료 비교표 신청 →</a>
+        </p>
+      </noscript>
+    </div>
+
+    <footer>
+      <div class="brand">
+        <svg viewBox="0 0 100 100" aria-hidden="true"><path d="M22 76V30h13v46H22zm21 0V40h13v36H43zm21 0V50h13v26H64z" fill="#10b981"/></svg>
+        <b>좋은농장 (NiceFarm)</b>
+      </div>
+      <p>계산 결과는 입력값으로 계산한 추정치이고, 실제 정산 조건은 거래처·금융사 계약에 따릅니다. 진단과 비교표는 무료입니다.</p>
+    </footer>
+  </div>
+</main>
 
 <script>
 (function () {
   "use strict";
 
-  /* ===== CALC CORE START (pure functions, DOM 없음) ===== */
+  /* ===== 계산 ===== */
   function computeCore(input) {
-    var M = Number(input.monthly);      // 월 평균 납품액 (만 원)
-    var D = Number(input.days);         // 정산 주기 (일)
-    var mode = input.mode;              // 'fee' | 'rate'
-    var fee = Number(input.fee);        // 1회 차감률 (%)
-    var rate = Number(input.rate);      // 연 이자율 (%)
+    var M = Number(input.monthly);
+    var D = Number(input.days);
+    var fee = Number(input.fee);
+    var rate = Number(input.rate);
 
     if (!isFinite(M) || M < 0) M = 0;
     if (!isFinite(D) || D <= 0) D = 30;
     if (!isFinite(fee) || fee < 0) fee = 0;
     if (!isFinite(rate) || rate < 0) rate = 0;
 
-    var capital = M * D / 30;                                  // 묶인 평균 운전자금 (만 원)
-    var effRate = (mode === "fee") ? (fee * 365 / D) : rate;    // 연 환산 이율 (%)
-    var annualCost = capital * effRate / 100;                  // 연간 비용 (만 원)
-
-    var target = D > 30 ? 30 : (D > 15 ? 15 : D);              // 단축 목표 주기
+    var capital = M * D / 30;
+    var effRate = (input.mode === "fee") ? (fee * 365 / D) : rate;
+    var annualCost = capital * effRate / 100;
+    var target = D > 30 ? 30 : (D > 15 ? 15 : D);
     var capitalTarget = M * target / 30;
-    var saved = (capital - capitalTarget) * effRate / 100;     // 단축 시 절감 (만 원)
+    var saved = (capital - capitalTarget) * effRate / 100;
 
-    var annualRevenue = M * 12;
-    var cycles = [15, 30, 45, 60].map(function (d) {
-      return { days: d, capital: M * d / 30 };
-    });
-
-    return {
-      capital: capital,
-      effRate: effRate,
-      annualCost: annualCost,
-      target: target,
-      capitalTarget: capitalTarget,
-      saved: saved,
-      annualRevenue: annualRevenue,
-      costRatio: annualRevenue > 0 ? (annualCost / annualRevenue * 100) : 0,
-      cycles: cycles
-    };
+    return { capital: capital, effRate: effRate, annualCost: annualCost,
+             target: target, capitalTarget: capitalTarget, saved: saved };
   }
 
   function fmtMoney(manwon) {
@@ -851,180 +302,94 @@
     var s = (Math.round(Number(v) * 100) / 100).toFixed(2);
     return s.replace(/\.?0+$/, function (m) { return m === ".00" || m === "0" ? "" : m; }) + "%";
   }
-  /* ===== CALC CORE END ===== */
 
-  var $ = function (sel) { return document.querySelector(sel); };
-  var $$ = function (sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); };
+  function trim(v) { return String(Math.round(Number(v) * 100) / 100); }
 
-  if (typeof window !== "undefined") {
-    window.__calcCore = computeCore;
-    window.__fmtMoney = fmtMoney;
-  }
+  var $ = function (s) { return document.querySelector(s); };
+  var $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
 
   var el = {
-    amount: $("#amount"),
-    amountRange: $("#amountRange"),
-    amountEq: $("#amountEq"),
-    amountChips: $("#amountChips"),
-    cost: $("#cost"),
-    costUnit: $("#costUnit"),
-    costHint: $("#costHint"),
-    costChips: $("#costChips"),
-    bars: $("#bars"),
-    rCapital: $("#rCapital"),
-    rCapitalNote: $("#rCapitalNote"),
-    rCost: $("#rCost"),
-    rCostNote: $("#rCostNote"),
-    rSaveK: $("#rSaveK"),
-    rSave: $("#rSave"),
-    rSaveUnit: $("#rSaveUnit"),
-    rSaveNote: $("#rSaveNote"),
-    copyBtn: $("#copyBtn"),
-    sumLine: $("#sumLine"),
-    copyLineBtn: $("#copyLineBtn"),
-    mailBtn: $("#mailBtn")
+    amount: $("#amount"), amountChips: $("#amountChips"),
+    cost: $("#cost"), costHint: $("#costHint"),
+    rCapital: $("#rCapital"), rCapitalNote: $("#rCapitalNote"),
+    rCost: $("#rCost"), rCostNote: $("#rCostNote"),
+    rSaveLine: $("#rSaveLine"), mailBtn: $("#mailBtn")
   };
-  if (!el.amount || !el.bars) return; // 계산기 없는 문서에서는 조용히 종료
+  if (!el.amount) return;
 
-  var state = {
-    monthly: 10000,      // 만 원
-    days: 60,
-    mode: "fee",
-    fee: 1,
-    rate: 6
-  };
-
-  var SLIDER_MIN = 500;      // 만 원
-  var SLIDER_MAX = 300000;   // 만 원 (월 30억)
+  var state = { monthly: 10000, days: 60, mode: "fee", fee: 1, rate: 6 };
   var LAST = null;
+  var MAIL_TO = "silverstrom@naver.com";
 
-  /* ---------- 단위·슬라이더 변환 ---------- */
-  function toSlider(amount) {
-    var t = Math.log(amount / SLIDER_MIN) / Math.log(SLIDER_MAX / SLIDER_MIN);
-    return Math.max(0, Math.min(1000, Math.round(t * 1000)));
-  }
-  function fromSlider(v) {
-    var t = v / 1000;
-    var raw = SLIDER_MIN * Math.pow(SLIDER_MAX / SLIDER_MIN, t);
-    return niceRound(raw);
-  }
-  function niceRound(v) {
-    if (v < 1000) return Math.round(v / 10) * 10;
-    if (v < 10000) return Math.round(v / 50) * 50;
-    if (v < 100000) return Math.round(v / 100) * 100;
-    return Math.round(v / 500) * 500;
-  }
   function clampAmount(v) {
     if (!isFinite(v) || v < 100) return 100;
     if (v > 1000000) return 1000000;
     return Math.round(v);
   }
+  function currentCost() { return state.mode === "fee" ? state.fee : state.rate; }
 
-  /* ---------- 결과 렌더 ---------- */
   function render() {
     var r = computeCore(state);
     LAST = r;
 
     el.rCapital.textContent = fmtMoney(r.capital);
-    el.rCapitalNote.textContent = state.days + "일치 납품 대금이 상시로 묶여 있는 셈입니다.";
+    el.rCapitalNote.textContent = state.days + "일치 납품 대금이 늘 묶여 있습니다.";
 
     el.rCost.textContent = fmtMoney(r.annualCost);
-    var howMany = state.mode === "fee"
-      ? "1회 " + trim(state.fee) + "% 차감을 " + state.days + "일 사용 → <b>연 " + pct2(r.effRate) + "</b> 환산"
-      : "연 " + trim(state.rate) + "% 기준";
-    el.rCostNote.innerHTML = howMany + " · 연 매출의 " + r.costRatio.toFixed(2) + "%";
+    el.rCostNote.textContent = state.mode === "fee"
+      ? "1회 " + trim(state.fee) + "% 차감을 " + state.days + "일 → 연 " + pct2(r.effRate) + "로 환산"
+      : "연 " + trim(state.rate) + "% 기준으로 계산";
 
     if (r.target === state.days) {
-      el.rSaveK.textContent = "③ 정산 주기";
-      el.rSave.textContent = "이미 최단";
-      el.rSaveUnit.textContent = "";
-      el.rSaveNote.textContent = "15일 이하 구조입니다. 다음 단계는 정산서 오차·누락 점검입니다.";
+      el.rSaveLine.textContent = "이미 가장 짧은 정산 주기입니다.";
     } else {
-      el.rSaveK.textContent = "③ 정산 주기를 " + r.target + "일로 줄이면";
-      el.rSave.textContent = fmtMoney(r.saved);
-      el.rSaveUnit.textContent = "절감 추정";
-      el.rSaveNote.textContent = "묶이는 자금이 " + fmtMoney(r.capital - r.capitalTarget) + " 줄어듭니다.";
+      el.rSaveLine.innerHTML = "정산 주기를 " + r.target + "일로 줄이면 1년에 <b>" +
+        fmtMoney(r.saved) + "</b>을 아낄 수 있습니다.";
     }
 
-    // 정산 주기별 막대
-    var maxCap = 1;
-    r.cycles.forEach(function (c) { if (c.capital > maxCap) maxCap = c.capital; });
-    el.bars.innerHTML = r.cycles.map(function (c) {
-      var on = c.days === state.days ? " on" : "";
-      var w = Math.max(1.5, (c.capital / maxCap) * 100).toFixed(1);
-      return '<div class="brow' + on + '">' +
-        '<span>' + c.days + '일</span>' +
-        '<span class="track"><i class="fill" style="width:' + w + '%"></i></span>' +
-        '<span class="valo">' + fmtMoney(c.capital) + '</span>' +
-        '</div>';
-    }).join("");
-
-    // 월/연 환산 표시
-    el.amountEq.innerHTML = "월 <b>" + fmtMoney(state.monthly) + "</b> · 연 <b>" + fmtMoney(state.monthly * 12) + "</b>";
-
-    // 칩 활성 표시
     $$("#amountChips .chip").forEach(function (b) {
       b.classList.toggle("on", Number(b.getAttribute("data-v")) === state.monthly);
     });
-    $$("#costChips .chip").forEach(function (b) {
-      b.classList.toggle("on", Math.abs(Number(b.getAttribute("data-v")) - currentCost()) < 0.001);
-    });
 
-    // 슬라이더 채움 비율
-    var p = (Number(el.amountRange.value) / 10) + "%";
-    el.amountRange.style.setProperty("--pct", p);
-
-    // 전환 CTA: 한 줄 요약 + 메일 본문 갱신
-    if (el.sumLine) el.sumLine.textContent = summaryLine();
     if (el.mailBtn) el.mailBtn.setAttribute("href", mailtoHref());
   }
 
-  function currentCost() { return state.mode === "fee" ? state.fee : state.rate; }
-
-  function trim(v) {
-    var s = String(Math.round(Number(v) * 100) / 100);
-    return s;
+  function mailBody() {
+    var r = LAST || computeCore(state);
+    var costLine = state.mode === "fee"
+      ? "1회 " + trim(state.fee) + "% 차감 (연 " + pct2(r.effRate) + " 환산)"
+      : "연 " + trim(state.rate) + "%";
+    return [
+      "안녕하세요. 계산기에서 나온 제 조건입니다.",
+      "월 납품액 " + fmtMoney(state.monthly) + " · 정산 주기 " + state.days + "일 · " + costLine,
+      "묶여 있는 돈 " + fmtMoney(r.capital) + " · 1년 비용 " + fmtMoney(r.annualCost),
+      "",
+      "이 조건으로 채널별 수수료 비교표를 받아보고 싶습니다."
+    ].join("\r\n");
+  }
+  function mailtoHref() {
+    return "mailto:" + MAIL_TO +
+      "?subject=" + encodeURIComponent("정산 비교표 요청 · 월 " + fmtMoney(state.monthly) + " · " + state.days + "일 정산") +
+      "&body=" + encodeURIComponent(mailBody());
   }
 
-  /* ---------- 비용 칩 ---------- */
-  var FEE_CHIPS = [0.9, 1, 1.6, 3];
-  var RATE_CHIPS = [3, 4.2, 5.8, 6, 8];
-  function renderCostChips() {
-    var list = state.mode === "fee" ? FEE_CHIPS : RATE_CHIPS;
-    el.costChips.innerHTML = list.map(function (v) {
-      return '<button type="button" class="chip" data-v="' + v + '">' + v + '%' + '</button>';
-    }).join("");
-  }
-
-  /* ---------- 이벤트 ---------- */
-  el.amountRange.addEventListener("input", function () {
-    var v = fromSlider(Number(el.amountRange.value));
-    state.monthly = v;
-    el.amount.value = v.toLocaleString("ko-KR");
-    render();
-  });
-
+  /* ===== 입력 ===== */
   el.amount.addEventListener("input", function () {
     var raw = Number(String(el.amount.value).replace(/[^0-9.]/g, ""));
     if (!isFinite(raw) || raw <= 0) return;
     state.monthly = clampAmount(raw);
-    el.amountRange.value = toSlider(state.monthly);
     render();
   });
-
   el.amount.addEventListener("blur", function () {
     state.monthly = clampAmount(Number(String(el.amount.value).replace(/[^0-9.]/g, "")) || state.monthly);
     el.amount.value = state.monthly.toLocaleString("ko-KR");
-    el.amountRange.value = toSlider(state.monthly);
     render();
   });
-
   el.amountChips.addEventListener("click", function (e) {
     var b = e.target.closest(".chip");
     if (!b) return;
     state.monthly = clampAmount(Number(b.getAttribute("data-v")));
     el.amount.value = state.monthly.toLocaleString("ko-KR");
-    el.amountRange.value = toSlider(state.monthly);
     render();
   });
 
@@ -1039,11 +404,9 @@
     r.addEventListener("change", function () {
       state.mode = r.value;
       el.cost.value = trim(currentCost());
-      el.costUnit.textContent = "%";
-      el.costHint.innerHTML = state.mode === "fee"
-        ? "정산금에서 1회 떼이는 비율입니다. 현장 실측 사례: 쿠팡 60일 정산에서 1% 차감."
-        : "운전자금을 빌린 연 이자율입니다. 예: 은행 외담대 연 5.8~6%, 정책자금 연 3~4.2%.";
-      renderCostChips();
+      el.costHint.textContent = state.mode === "fee"
+        ? "정산금에서 한 번 떼이는 비율입니다. (예: 60일 정산에서 1% 차감)"
+        : "운전자금을 빌린 연 이자율입니다. (예: 은행 대출 연 5~6%)";
       render();
     });
   });
@@ -1051,148 +414,26 @@
   el.cost.addEventListener("input", function () {
     var raw = Number(String(el.cost.value).replace(/[^0-9.]/g, ""));
     if (!isFinite(raw)) return;
-    if (state.mode === "fee") state.fee = Math.min(40, Math.max(0, raw));
-    else state.rate = Math.min(40, Math.max(0, raw));
+    var v = Math.min(40, Math.max(0, raw));
+    if (state.mode === "fee") state.fee = v; else state.rate = v;
     render();
   });
-
   el.cost.addEventListener("blur", function () {
     el.cost.value = trim(currentCost());
     render();
   });
 
-  el.costChips.addEventListener("click", function (e) {
-    var b = e.target.closest(".chip");
-    if (!b) return;
-    var v = Number(b.getAttribute("data-v"));
-    if (state.mode === "fee") state.fee = v; else state.rate = v;
-    el.cost.value = trim(v);
-    render();
-  });
-
-  /* ---------- 결과 복사 ---------- */
-  var FORM_URL = "https://forms.gle/wB7M9gDrPymoHdC86";
-  var MAIL_TO = "silverstrom@naver.com";
-
-  function costShort() {
-    var r = LAST || computeCore(state);
-    return state.mode === "fee"
-      ? "1회 " + trim(state.fee) + "% 차감(연 " + pct2(r.effRate) + ")"
-      : "연 " + trim(state.rate) + "%";
-  }
-
-  // 계산기 위젯·메일 본문에 쓰는 한 줄 요약
-  function summaryLine() {
-    var r = LAST || computeCore(state);
-    return "월 " + fmtMoney(state.monthly) + " 납품 · " + state.days + "일 정산 · " + costShort() +
-      " → 묶인 운전자금 " + fmtMoney(r.capital) + " · 연 손실 " + fmtMoney(r.annualCost);
-  }
-
-  function mailSubject() {
-    return "정산 비교표 요청 · 월 " + fmtMoney(state.monthly) + " · " + state.days + "일 정산";
-  }
-
-  function mailBody() {
-    var r = LAST || computeCore(state);
-    var costLine = state.mode === "fee"
-      ? "1회 " + trim(state.fee) + "% 차감 (연 " + pct2(r.effRate) + " 환산)"
-      : "연 " + trim(state.rate) + "%";
-    return [
-      "안녕하세요. 계산기에서 나온 제 조건입니다.",
-      "월 납품액 " + fmtMoney(state.monthly) + " · 정산 주기 " + state.days + "일 · " + costLine,
-      "→ 묶인 운전자금 " + fmtMoney(r.capital) + " · 연 금융·할인 손실 " + fmtMoney(r.annualCost),
-      "",
-      "이 조건으로 채널별 수수료 비교표를 받아보고 싶습니다.",
-      "좋은농장(NiceFarm) 계산기에서 보냄"
-    ].join("\r\n");
-  }
-
-  function mailtoHref() {
-    return "mailto:" + MAIL_TO +
-      "?subject=" + encodeURIComponent(mailSubject()) +
-      "&body=" + encodeURIComponent(mailBody());
-  }
-
-  function summaryText() {
-    var r = LAST || computeCore(state);
-    var costLine = state.mode === "fee"
-      ? "1회 " + trim(state.fee) + "% 차감 (연 " + pct2(r.effRate) + " 환산)"
-      : "연 " + trim(state.rate) + "%";
-    var saveLine = (r.target === state.days)
-      ? "· 정산 주기: 이미 최단(15일 이하)"
-      : "· " + r.target + "일로 단축 시 절감 추정: " + fmtMoney(r.saved);
-    return [
-      "[10초 정산 손실 자가진단]",
-      "· 월 평균 납품·매입액: " + fmtMoney(state.monthly) + " (연 " + fmtMoney(state.monthly * 12) + ")",
-      "· 정산 주기: " + state.days + "일",
-      "· 현재 비용: " + costLine,
-      "→ 묶여 있는 평균 운전자금: " + fmtMoney(r.capital),
-      "→ 연간 금융·할인 비용 손실: " + fmtMoney(r.annualCost),
-      saveLine,
-      "",
-      "정산서 1건 무료 AI 진단 & 비교 리포트: https://forms.gle/wB7M9gDrPymoHdC86"
-    ].join("\n");
-  }
-
-  function flashBtn(btn, text) {
-    if (!btn) return;
-    var old = btn.textContent;
-    btn.textContent = text;
-    btn.disabled = true;
-    setTimeout(function () {
-      btn.textContent = old;
-      btn.disabled = false;
-    }, 1600);
-  }
-
-  function copyText(text, done) {
-    var fallback = function () {
-      var ta = document.createElement("textarea");
-      ta.value = text;
-      ta.setAttribute("readonly", "");
-      ta.style.position = "fixed";
-      ta.style.top = "-1000px";
-      document.body.appendChild(ta);
-      ta.select();
-      var ok = false;
-      try { ok = document.execCommand("copy"); } catch (err) { ok = false; }
-      document.body.removeChild(ta);
-      done(ok);
-    };
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(function () { done(true); }, fallback);
-    } else {
-      fallback();
-    }
-  }
-
-  el.copyBtn.addEventListener("click", function () {
-    copyText(summaryText(), function (ok) {
-      flashBtn(el.copyBtn, ok ? "복사됐습니다 ✓" : "복사 실패 — 길게 눌러 복사해 주세요");
-    });
-  });
-
-  if (el.copyLineBtn) {
-    el.copyLineBtn.addEventListener("click", function () {
-      copyText(summaryLine(), function (ok) {
-        flashBtn(el.copyLineBtn, ok ? "복사됨 ✓" : "복사 실패");
-      });
-    });
-  }
-
-  /* ---------- URL 파라미터 프리필 (?m=10000&d=60&f=1 / ?mode=rate&r=6) ---------- */
+  /* ===== URL 파라미터 (?m=10000&d=60&f=1 / ?mode=rate&r=6) ===== */
   (function prefill() {
     try {
       var q = new URLSearchParams(window.location.search);
-      var qm = q.get("m");
-      var m = Number(qm);
-      if (qm !== null && qm !== "" && isFinite(m) && m >= 100) {
+      var m = Number(q.get("m"));
+      if (q.get("m") && isFinite(m) && m >= 100) {
         state.monthly = clampAmount(m);
         el.amount.value = state.monthly.toLocaleString("ko-KR");
       }
-      var qd = q.get("d");
-      var d = Number(qd);
-      if (qd !== null && [15, 30, 45, 60].indexOf(d) >= 0) {
+      var d = Number(q.get("d"));
+      if ([15, 30, 45, 60].indexOf(d) >= 0) {
         state.days = d;
         var rd = document.querySelector('input[name="cycle"][value="' + d + '"]');
         if (rd) rd.checked = true;
@@ -1201,26 +442,19 @@
         state.mode = "rate";
         var rm = document.querySelector('input[name="mode"][value="rate"]');
         if (rm) rm.checked = true;
-        var qr = q.get("r");
-        var rr = Number(qr);
-        if (qr !== null && qr !== "" && isFinite(rr) && rr >= 0) state.rate = Math.min(40, rr);
-        el.costHint.innerHTML = "운전자금을 빌린 연 이자율입니다. 예: 은행 외담대 연 5.8~6%, 정책자금 연 3~4.2%.";
+        var rr = Number(q.get("r"));
+        if (q.get("r") && isFinite(rr) && rr >= 0) state.rate = Math.min(40, rr);
+        el.costHint.textContent = "운전자금을 빌린 연 이자율입니다. (예: 은행 대출 연 5~6%)";
       } else {
-        var qf = q.get("f");
-        var f = Number(qf);
-        if (qf !== null && qf !== "" && isFinite(f) && f >= 0) state.fee = Math.min(40, f);
+        var f = Number(q.get("f"));
+        if (q.get("f") && isFinite(f) && f >= 0) state.fee = Math.min(40, f);
       }
       el.cost.value = trim(currentCost());
-    } catch (err) { /* 구형 브라우저는 기본값 유지 */ }
+    } catch (err) { /* 기본값 유지 */ }
   })();
 
-  /* ---------- 초기화 ---------- */
-  renderCostChips();
   el.amount.value = state.monthly.toLocaleString("ko-KR");
-  el.amountRange.value = toSlider(state.monthly);
   el.cost.value = trim(currentCost());
-  if (el.sumLine) el.sumLine.textContent = summaryLine();
-  if (el.mailBtn) el.mailBtn.setAttribute("href", mailtoHref());
   render();
 })();
 </script>
