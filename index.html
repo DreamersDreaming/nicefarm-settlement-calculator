@@ -494,5 +494,53 @@
   render();
 })();
 </script>
+
+<script>
+/* 행동 로그 — 개인정보 비수집(쿠키·IP·식별자 저장 없음). 구글 폼 1문항에 이벤트명만 남긴다.
+   view=페이지 열람 / calc=계산 실행 / form=1분 체크 클릭 / mail=이메일 클릭 / free=한도 여유 선택 */
+(function () {
+  try {
+    var U = "https://docs.google.com/forms/d/e/1FAIpQLSeCDV9luiu2Hd7TitrPi2MpfsZhvX6-z8oSO_yrsgEMpZXA2A/formResponse";
+    var K = "entry.1856029530";
+    var s = "";
+    try { s = (new URLSearchParams(location.search).get("utm_source") || "").replace(/[^A-Za-z0-9._-]/g, "").slice(0, 20); } catch (e) {}
+    if (!s && document.referrer) {
+      try { s = new URL(document.referrer).hostname.replace(/^www\./, "").slice(0, 24); } catch (e) {}
+    }
+    var dev = (window.matchMedia && matchMedia("(max-width:600px)").matches) ? "m" : "p";
+    var done = {};
+    var hit = function (ev) {
+      if (done[ev]) return;
+      done[ev] = 1;
+      var body = K + "=" + encodeURIComponent(ev + ";" + (s || "direct") + ";" + dev) + "&submit=Submit";
+      try {
+        fetch(U, {
+          method: "POST", mode: "no-cors", credentials: "omit", keepalive: true,
+          headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" }, body: body
+        });
+      } catch (e) {
+        var im = new Image();
+        im.referrerPolicy = "no-referrer";
+        im.src = U + "?" + body + "&t=" + Date.now();
+      }
+    };
+    hit("view");
+    var form = document.getElementById("calcForm");
+    if (form) {
+      var once = function () { hit("calc"); };
+      form.addEventListener("input", once, true);
+      form.addEventListener("change", once, true);
+      form.addEventListener("click", function (e) { if (e.target.closest && e.target.closest(".chip")) hit("calc"); }, true);
+      form.addEventListener("change", function (e) {
+        if (e.target && e.target.name === "limit" && e.target.value === "free") hit("free");
+      });
+    }
+    var ctas = document.querySelectorAll(".cta-box .btn");
+    for (var i = 0; i < ctas.length; i++) ctas[i].addEventListener("click", function () { hit("form"); });
+    var mb = document.getElementById("mailBtn");
+    if (mb) mb.addEventListener("click", function () { hit("mail"); });
+  } catch (e) {}
+})();
+</script>
 </body>
 </html>
