@@ -405,7 +405,7 @@
 
     el.amountHint.innerHTML = "= <b>" + fmtEok(state.a) + " 원</b> · 1~3억 구간에서 대부분 쓰십니다";
     el.rInterest.textContent = fmtWon(r.interest);
-    el.rInterestNote.textContent = fmtEok(state.a) + " 원 × " + p + "% (연 " + RATE.toFixed(1) + " · " + state.days + "일)";
+    el.rInterestNote.textContent = fmtEok(state.a) + " 원 × " + p + "% (연 " + RATE.toFixed(1) + "% · " + state.days + "일)";
     el.rMargin.innerHTML = p + '<span class="u">%</span>';
     el.rMarginNote.textContent = "추가 납품·경매로 " + p + "%만 더 남기면 이자 비용을 빼고도 손해가 없습니다.";
     el.rVerdict.innerHTML = "1억당 이자는 <b>" + fmtWon(r.perEok) + "</b>. " +

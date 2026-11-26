@@ -44,7 +44,7 @@ function scan(){
     }catch(e){ s.textContent='ERR '+e.message; s.className='stat bad'; }
   });
 }
-window.addEventListener('load',function(){ setTimeout(scan,600); });
+window.addEventListener('load',function(){ setTimeout(scan,600); setTimeout(scan,1400); setTimeout(scan,2400); });
 window.addEventListener('resize',function(){ setTimeout(scan,200); });
 </script>
 </body>
