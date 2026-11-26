@@ -3,25 +3,31 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>정산 묶인 돈 계산기 | 좋은농장 NiceFarm</title>
-<meta name="description" content="월 납품액과 정산 주기만 넣으면 정산 대금으로 묶여 있는 돈과 1년 비용이 바로 계산됩니다. 무료 비교표는 1분 설문으로 받아보세요.">
-<meta name="theme-color" content="#0f3d2e">
+<title>1개월 추가 급전 비용 계산기 | 좋은농장 NiceFarm</title>
+<meta name="description" content="1금융권·농신보 한도가 다 찼을 때, 거래 이력으로 추가로 쓸 수 있는 1개월 단기 급전(1~3억)의 실이자와 손익분기 마진을 10초로 계산합니다.">
+<meta name="theme-color" content="#0d2440">
 <meta property="og:type" content="website">
-<meta property="og:title" content="정산 기다리는 동안, 내 돈은 얼마나 묶여 있을까요">
-<meta property="og:description" content="월 납품액과 정산 주기만 넣으면 바로 계산됩니다.">
+<meta property="og:title" content="한도가 다 찼을 때, 1개월 급전 비용은 얼마일까요">
+<meta property="og:description" content="필요 금액과 사용 기간만 고르면 실이자와 손익분기 마진이 바로 나옵니다.">
 <meta property="og:locale" content="ko_KR">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%230f3d2e'/%3E%3Cpath d='M28 72V28h12v44H28zm18 0V40h12v32H46zm18 0V52h12v20H64z' fill='%2310b981'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%230d2440'/%3E%3Cpath d='M28 72V28h12v44H28zm18 0V40h12v32H46zm18 0V52h12v20H64z' fill='%23c9a227'/%3E%3C/svg%3E">
 <style>
   :root{
-    --green:#0f3d2e;
-    --green-deep:#0a2a20;
-    --mint:#10b981;
-    --ink:#12211b;
-    --body:#3c4f46;
-    --muted:#71837a;
-    --line:#e5ebe7;
-    --bg:#f6f8f7;
+    --navy:#0d2440;
+    --navy-2:#17324f;
+    --navy-deep:#08182b;
+    --gold:#c9a227;
+    --gold-line:#e3cf92;
+    --gold-soft:#fbf4de;
+    --ink:#101d2f;
+    --body:#3b4a5c;
+    --muted:#6f7f8f;
+    --line:#e3e9f0;
+    --bg:#f4f6f9;
     --card:#ffffff;
+    --ok:#0b7a5b;
+    --warn-soft:#fff8e6;
+    --warn-line:#f0dca6;
     --font:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","맑은 고딕","Noto Sans KR",Roboto,"Helvetica Neue",Arial,sans-serif;
   }
   *,*::before,*::after{box-sizing:border-box}
@@ -33,131 +39,186 @@
     overflow-x:hidden;
   }
   h1,h2,h3{margin:0;color:var(--ink);line-height:1.35;letter-spacing:-.03em}
-  p{margin:0}
+  p,ul{margin:0}
+  ul{padding:0;list-style:none}
   a{color:inherit}
   .num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
-  .wrap{width:100%;max-width:520px;margin:0 auto;padding:0 18px}
+  .wrap{width:100%;max-width:520px;margin:0 auto;padding:0 18px;min-width:0}
   .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 
   /* ---------- header ---------- */
-  .head{background:var(--green);color:#dff0e8}
-  .head .wrap{padding-top:26px;padding-bottom:34px}
+  .head{
+    background:linear-gradient(158deg,#17324f 0%,#0d2440 52%,#08182b 100%);
+    color:#cfdceb;border-bottom:3px solid var(--gold);
+  }
+  .head .wrap{padding-top:24px;padding-bottom:32px}
   .brand{display:flex;align-items:center;gap:8px;min-width:0}
   .brand svg{width:22px;height:22px;flex:none}
-  .brand b{font-size:.92rem;font-weight:800;color:#fff;letter-spacing:-.02em;word-break:keep-all}
-  .head h1{
-    color:#fff;font-size:clamp(1.32rem,6vw,1.65rem);font-weight:800;
-    margin:18px 0 8px;word-break:keep-all;
+  .brand b{font-size:.9rem;font-weight:800;color:#fff;letter-spacing:-.02em;word-break:keep-all;min-width:0}
+  .brand .tag{
+    font-size:.66rem;font-weight:700;color:var(--gold);border:1px solid rgba(201,162,39,.55);
+    border-radius:999px;padding:2px 7px;flex:none;letter-spacing:.02em;
   }
-  .head p{color:#b5cfc3;font-size:.92rem;word-break:keep-all}
+  .head h1{
+    color:#fff;font-size:clamp(1.28rem,5.7vw,1.6rem);font-weight:800;
+    margin:16px 0 8px;word-break:keep-all;letter-spacing:-.035em;
+  }
+  .head h1 em{font-style:normal;color:#f0cf6a}
+  .head .sub{color:#a9bdd1;font-size:.9rem;word-break:keep-all}
+
+  .clarify{margin-top:16px;display:grid;gap:6px}
+  .clarify p{
+    display:flex;gap:7px;align-items:flex-start;
+    font-size:.79rem;line-height:1.5;word-break:keep-all;color:#c8d7e6;
+  }
+  .clarify .m{flex:none;font-weight:800;line-height:1.5}
+  .clarify .no .m{color:#e8b4b4}
+  .clarify .yes .m{color:#f0cf6a}
+  .clarify .yes{color:#fff;font-weight:700}
 
   /* ---------- card ---------- */
   .main{padding:0 0 8px}
   .card{
     background:var(--card);border:1px solid var(--line);border-radius:20px;
-    box-shadow:0 14px 34px -26px rgba(15,61,46,.45);
-    padding:22px 18px;margin-top:-18px;position:relative;
-    width:100%;max-width:100%;overflow:hidden;
+    box-shadow:0 16px 38px -28px rgba(13,36,64,.55);
+    padding:20px 16px;margin-top:-16px;position:relative;
+    width:100%;max-width:100%;overflow:hidden;min-width:0;
   }
 
-  .field{padding-bottom:20px;margin-bottom:20px;border-bottom:1px solid var(--line)}
+  .field{padding-bottom:18px;margin-bottom:18px;border-bottom:1px solid var(--line);min-width:0}
   .field:last-of-type{padding-bottom:0;margin-bottom:0;border-bottom:0}
   .field-label{
     display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;
-    font-weight:700;color:var(--ink);font-size:.94rem;margin-bottom:9px;
+    font-weight:800;color:var(--ink);font-size:.94rem;margin-bottom:9px;
     word-break:keep-all;
   }
-  .field-label .opt{font-weight:500;color:var(--muted);font-size:.8rem}
+  .field-label .step{
+    flex:none;width:18px;height:18px;border-radius:50%;background:var(--navy);color:#fff;
+    font-size:.66rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center;
+    align-self:center;line-height:1;
+  }
+  .field-label .opt{font-weight:600;color:var(--muted);font-size:.78rem}
 
   .amount-box{
-    display:flex;align-items:center;gap:6px;min-width:0;width:100%;
-    border:1.5px solid var(--line);border-radius:12px;background:#fbfdfc;
+    display:flex;align-items:center;gap:6px;min-width:0;width:100%;max-width:100%;
+    border:1.5px solid var(--line);border-radius:12px;background:#fbfcfe;
     padding:2px 12px;transition:border-color .15s,box-shadow .15s;
   }
-  .amount-box:focus-within{border-color:var(--mint);box-shadow:0 0 0 3px rgba(16,185,129,.12);background:#fff}
+  .amount-box:focus-within{border-color:var(--navy-2);box-shadow:0 0 0 3px rgba(23,50,79,.1);background:#fff}
   .amount-box input{
-    flex:1 1 auto;min-width:0;width:100%;border:0;background:transparent;outline:none;
-    font-family:inherit;font-size:1.35rem;font-weight:800;color:var(--ink);
+    flex:1 1 auto;min-width:0;width:100%;max-width:100%;border:0;background:transparent;outline:none;
+    font-family:inherit;font-size:1.3rem;font-weight:800;color:var(--ink);
     letter-spacing:-.02em;padding:10px 0;font-variant-numeric:tabular-nums;
   }
   .amount-box input::-webkit-outer-spin-button,
   .amount-box input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
-  .amount-box input[type=number]{-moz-appearance:textfield;appearance:textfield}
-  .amount-box .unit{font-size:.85rem;font-weight:700;color:var(--muted);flex:none}
+  .amount-box .unit{font-size:.82rem;font-weight:700;color:var(--muted);flex:none}
 
-  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+  .chips{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:8px}
   .chip{
-    font-family:inherit;font-size:.79rem;font-weight:700;color:#3c5348;
-    background:#fbfdfc;border:1px solid var(--line);border-radius:999px;
-    padding:6px 11px;cursor:pointer;line-height:1.2;transition:.15s;
+    font-family:inherit;font-size:.82rem;font-weight:800;color:#37516b;
+    background:#fbfcfe;border:1px solid var(--line);border-radius:10px;
+    padding:9px 2px;cursor:pointer;line-height:1.2;transition:.15s;min-width:0;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
   }
-  .chip:hover{border-color:#8fd9bd;color:#0a6b4e}
-  .chip.on{background:#e9fbf3;border-color:var(--mint);color:#06654a}
+  .chip:hover{border-color:var(--gold-line);color:var(--navy)}
+  .chip.on{background:var(--gold-soft);border-color:var(--gold);color:#6d5208}
 
-  .seg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;background:#f1f5f3;border-radius:12px;padding:5px}
-  .seg.two{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .seg label{position:relative;cursor:pointer;display:block;min-width:0}
-  .seg input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer}
-  .seg span{
-    display:block;text-align:center;padding:9px 2px;border-radius:8px;
-    font-size:.86rem;font-weight:700;color:#51675d;transition:.15s;word-break:keep-all;
+  .opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;min-width:0}
+  .opts label{position:relative;display:block;min-width:0;cursor:pointer}
+  .opts input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer;width:100%;height:100%}
+  .opts .bx{
+    display:block;border:1.5px solid var(--line);border-radius:12px;background:#fbfcfe;
+    padding:10px 9px;transition:.15s;min-width:0;height:100%;
   }
-  .seg input:checked + span{background:var(--green);color:#fff}
-  .seg input:focus-visible + span{outline:2px solid var(--mint);outline-offset:2px}
+  .opts .d{display:block;font-size:.98rem;font-weight:800;color:var(--navy);letter-spacing:-.02em;line-height:1.25}
+  .opts .t{display:block;font-size:.72rem;font-weight:600;color:var(--muted);margin-top:2px;line-height:1.35;word-break:keep-all}
+  .opts input:checked + .bx{border-color:var(--navy);background:#eef3f9;box-shadow:inset 0 0 0 1px var(--navy)}
+  .opts input:checked + .bx .d{color:var(--navy-deep)}
+  .opts input:checked + .bx .t{color:#4a6280}
+  .opts input:focus-visible + .bx{outline:2px solid var(--gold);outline-offset:2px}
 
-  .hint{font-size:.78rem;color:var(--muted);margin-top:8px;word-break:keep-all}
+  .hint{font-size:.76rem;color:var(--muted);margin-top:7px;word-break:keep-all;min-width:0}
+  .hint b{color:#37516b;font-weight:800}
 
   /* ---------- results ---------- */
   .result{
-    margin-top:20px;padding:18px;border-radius:14px;background:#f7fbf9;
-    border:1px solid #e2f0ea;min-width:0;
+    margin-top:18px;padding:16px 14px;border-radius:16px;background:#fbfcfe;
+    border:1px solid var(--line);min-width:0;
   }
-  .result__row + .result__row{margin-top:14px;padding-top:14px;border-top:1px solid #e2f0ea}
-  .result__k{font-size:.83rem;font-weight:700;color:#4a6357;word-break:keep-all}
+  .result__label{
+    display:flex;align-items:center;gap:6px;font-size:.8rem;font-weight:800;color:#33506f;
+    word-break:keep-all;
+  }
+  .result__label::before{content:"";width:4px;height:12px;border-radius:2px;background:var(--gold);flex:none}
   .result__v{
-    font-size:clamp(1.6rem,8vw,2rem);font-weight:800;color:var(--green);
-    letter-spacing:-.035em;line-height:1.25;margin-top:2px;
-    overflow-wrap:anywhere;word-break:keep-all;
+    font-size:clamp(1.62rem,7.4vw,2rem);font-weight:800;color:var(--navy);
+    letter-spacing:-.04em;line-height:1.22;margin-top:3px;
+    overflow-wrap:anywhere;word-break:keep-all;min-width:0;
   }
-  .result__v .u{font-size:.62em;font-weight:700;color:#3f6b58;margin-left:2px}
-  .result__n{font-size:.78rem;color:var(--muted);margin-top:3px;word-break:keep-all}
-  .result__line{
-    margin-top:14px;padding-top:14px;border-top:1px solid #e2f0ea;
-    font-size:.83rem;color:#3c5348;line-height:1.6;word-break:keep-all;
+  .result__v .u{font-size:.6em;font-weight:800;color:#446084;margin-left:2px}
+  .result__n{font-size:.76rem;color:var(--muted);margin-top:3px;word-break:keep-all;line-height:1.55}
+  .result__row + .result__row{margin-top:14px;padding-top:14px;border-top:1px dashed #dbe4ee}
+  .verdict{
+    margin-top:14px;padding:11px 12px;border-radius:11px;background:var(--gold-soft);
+    border:1px solid var(--gold-line);font-size:.82rem;color:#4a3a10;line-height:1.6;word-break:keep-all;
   }
-  .result__line b{color:var(--green);font-weight:800}
+  .verdict b{color:#6d5208;font-weight:800}
+  .notice{
+    display:none;margin-bottom:14px;padding:12px;border-radius:12px;
+    background:var(--warn-soft);border:1px solid var(--warn-line);
+    font-size:.82rem;color:#6b5008;line-height:1.6;word-break:keep-all;
+  }
+  .notice b{display:block;color:#5a4306;font-weight:800;margin-bottom:3px}
+  .result[data-limit="free"] .notice{display:block}
+  .result[data-limit="free"] .result__head{display:block}
+  .result__head{display:none;font-size:.74rem;font-weight:800;color:var(--muted);margin-bottom:2px}
 
   /* ---------- cta ---------- */
   .cta-box{margin-top:18px;min-width:0}
-  .cta-box h2{font-size:1.02rem;font-weight:800;word-break:keep-all}
-  .cta-box p{font-size:.85rem;color:var(--muted);margin-top:5px;word-break:keep-all}
+  .cta-box h2{font-size:1rem;font-weight:800;word-break:keep-all;line-height:1.4}
+  .cta-box p{font-size:.82rem;color:var(--muted);margin-top:5px;word-break:keep-all}
   .btn{
     display:flex;align-items:center;justify-content:center;gap:6px;
-    width:100%;max-width:100%;margin-top:14px;
-    background:var(--mint);color:#04231a;text-decoration:none;
+    width:100%;max-width:100%;margin-top:13px;min-width:0;
+    background:var(--gold);color:#241a00;text-decoration:none;
     font-family:inherit;font-size:1rem;font-weight:800;line-height:1.35;
-    padding:15px 14px;border-radius:13px;border:0;cursor:pointer;text-align:center;
-    box-shadow:0 12px 22px -14px rgba(16,185,129,.8);
+    padding:15px 12px;border-radius:13px;border:0;cursor:pointer;text-align:center;
+    box-shadow:0 12px 22px -14px rgba(201,162,39,.9);
     transition:background .15s,transform .15s;word-break:keep-all;
   }
-  .btn:hover{background:#0ea875;transform:translateY(-1px)}
+  .btn:hover{background:#b8931f;transform:translateY(-1px)}
   .btn:active{transform:translateY(0)}
-  .btn:focus-visible{outline:3px solid #a7f3d0;outline-offset:2px}
-  .btn small{font-size:.75rem;font-weight:700;color:#065c43}
-  .btn--stack{flex-direction:column;gap:1px;padding:14px}
+  .btn:focus-visible{outline:3px solid #f0cf6a;outline-offset:2px}
+  .btn small{font-size:.72rem;font-weight:700;color:#5a4306}
+  .btn--stack{flex-direction:column;gap:1px;padding:13px 12px}
 
   .mail{
-    display:inline-block;margin-top:10px;font-size:.8rem;color:#5c7268;
-    text-decoration:none;border-bottom:1px solid #d7e5de;padding-bottom:1px;
+    display:inline-block;margin-top:10px;font-size:.79rem;color:#556a7f;
+    text-decoration:none;border-bottom:1px solid #d8e1ec;padding-bottom:1px;
     max-width:100%;overflow-wrap:anywhere;
   }
-  .mail:hover{color:#0a6b4e;border-color:#8fd9bd}
-  .fine{margin-top:12px;font-size:.75rem;color:var(--muted);word-break:keep-all}
+  .mail:hover{color:var(--navy);border-color:var(--gold-line)}
+  .fine{margin-top:10px;font-size:.72rem;color:var(--muted);word-break:keep-all;line-height:1.6}
+
+  /* ---------- why ---------- */
+  .why{margin-top:22px;min-width:0}
+  .why h2{font-size:.95rem;font-weight:800;word-break:keep-all}
+  .why ul{margin-top:10px;display:grid;gap:9px;min-width:0}
+  .why li{
+    background:#fff;border:1px solid var(--line);border-radius:12px;
+    padding:11px 12px;font-size:.81rem;line-height:1.62;color:#41536a;
+    word-break:keep-all;min-width:0;
+  }
+  .why li b{display:block;color:var(--ink);font-weight:800;margin-bottom:2px;font-size:.85rem}
+  .why li b span{color:var(--gold);font-weight:800}
 
   /* ---------- footer ---------- */
-  footer{margin-top:26px;padding:20px 0 30px;border-top:1px solid var(--line)}
+  footer{margin-top:24px;padding:18px 0 30px;border-top:1px solid var(--line);min-width:0}
   footer .brand b{color:var(--ink)}
-  footer p{font-size:.74rem;color:#8b9a92;line-height:1.7;margin-top:8px;word-break:keep-all}
+  footer .brand .tag{color:#8a6f14;border-color:#e3cf92}
+  footer p{font-size:.72rem;color:#8b99a7;line-height:1.72;margin-top:8px;word-break:keep-all}
+  footer p + p{margin-top:5px}
 </style>
 </head>
 <body>
@@ -165,11 +226,16 @@
 <header class="head">
   <div class="wrap">
     <div class="brand">
-      <svg viewBox="0 0 100 100" aria-hidden="true"><path d="M22 76V30h13v46H22zm21 0V40h13v36H43zm21 0V50h13v26H64z" fill="#10b981"/></svg>
+      <svg viewBox="0 0 100 100" aria-hidden="true"><path d="M22 76V30h13v46H22zm21 0V40h13v36H43zm21 0V50h13v26H64z" fill="#c9a227"/></svg>
       <b>좋은농장 (NiceFarm)</b>
+      <span class="tag">MoneyLock</span>
     </div>
-    <h1>정산 기다리는 동안,<br>내 돈은 얼마나 묶여 있을까요</h1>
-    <p>월 납품액과 정산 주기만 넣으면 바로 계산됩니다.</p>
+    <h1>1금융권·농신보 한도가<br>다 찼을 때, <em>1개월 급전</em></h1>
+    <p class="sub">필요 금액과 사용 기간만 고르면, 추가 1~3억의 실제 비용이 바로 나옵니다.</p>
+    <div class="clarify">
+      <p class="no"><span class="m" aria-hidden="true">✕</span><span>정책자금(연 1.5~3%)·어음할인 갈아타기 상품이 아닙니다</span></p>
+      <p class="yes"><span class="m" aria-hidden="true">✓</span><span>한도가 찼을 때 1개월만 쓰는 추가 운전자금(1~3억)입니다</span></p>
+    </div>
   </div>
 </header>
 
@@ -180,82 +246,94 @@
       <form id="calcForm" autocomplete="off" onsubmit="return false;">
 
         <div class="field">
-          <label class="field-label" for="amount">월 평균 납품·매입액 <span class="opt">(만 원)</span></label>
+          <label class="field-label" for="amount"><span class="step" aria-hidden="true">1</span>필요한 추가 급전 금액</label>
           <div class="amount-box">
-            <input id="amount" type="text" inputmode="numeric" value="10,000" aria-label="월 평균 납품·매입액 (만 원)">
+            <input id="amount" type="text" inputmode="numeric" value="20,000" aria-label="필요한 추가 급전 금액 (만 원)">
             <span class="unit">만 원</span>
           </div>
           <div class="chips" id="amountChips">
             <button type="button" class="chip" data-v="5000">5천만</button>
             <button type="button" class="chip" data-v="10000">1억</button>
+            <button type="button" class="chip on" data-v="20000">2억</button>
             <button type="button" class="chip" data-v="30000">3억</button>
-            <button type="button" class="chip" data-v="100000">10억</button>
+          </div>
+          <p class="hint" id="amountHint">= <b>2억 원</b> · 1~3억 구간에서 대부분 쓰십니다</p>
+        </div>
+
+        <div class="field">
+          <span class="field-label" id="periodLabel"><span class="step" aria-hidden="true">2</span>사용 기간 <span class="opt">한 달 안쪽</span></span>
+          <div class="opts" role="radiogroup" aria-labelledby="periodLabel">
+            <label><input type="radio" name="period" value="30"><span class="bx"><span class="d">30일</span><span class="t">1개월 단위</span></span></label>
+            <label><input type="radio" name="period" value="35" checked><span class="bx"><span class="d">35일</span><span class="t">출하·마트 공백</span></span></label>
+            <label><input type="radio" name="period" value="50"><span class="bx"><span class="d">50일</span><span class="t">원물 선지급+정산</span></span></label>
+            <label><input type="radio" name="period" value="60"><span class="bx"><span class="d">60일</span><span class="t">식자재 외상</span></span></label>
           </div>
         </div>
 
         <div class="field">
-          <span class="field-label" id="cycleLabel">정산 주기 <span class="opt">납품일부터 입금일까지</span></span>
-          <div class="seg" role="radiogroup" aria-labelledby="cycleLabel">
-            <label><input type="radio" name="cycle" value="15"><span>15일</span></label>
-            <label><input type="radio" name="cycle" value="30"><span>30일</span></label>
-            <label><input type="radio" name="cycle" value="45"><span>45일</span></label>
-            <label><input type="radio" name="cycle" value="60" checked><span>60일</span></label>
+          <span class="field-label" id="limitLabel"><span class="step" aria-hidden="true">3</span>현재 한도 상태</span>
+          <div class="opts" role="radiogroup" aria-labelledby="limitLabel">
+            <label><input type="radio" name="limit" value="used" checked><span class="bx"><span class="d">한도 소진</span><span class="t">1금융·농신보 다 씀</span></span></label>
+            <label><input type="radio" name="limit" value="free"><span class="bx"><span class="d">한도 여유</span><span class="t">아직 남아 있음</span></span></label>
           </div>
-        </div>
-
-        <div class="field">
-          <span class="field-label" id="costLabel">지금 드는 비용</span>
-          <div class="seg two" role="radiogroup" aria-labelledby="costLabel">
-            <label><input type="radio" name="mode" value="fee" checked><span>1회 차감 %</span></label>
-            <label><input type="radio" name="mode" value="rate"><span>연 이자 %</span></label>
-          </div>
-          <div class="amount-box" style="margin-top:9px">
-            <input id="cost" type="number" inputmode="decimal" min="0" max="40" step="0.1" value="1" aria-label="수수료 또는 이자율 (%)">
-            <span class="unit">%</span>
-          </div>
-          <p class="hint" id="costHint">정산금에서 한 번 떼이는 비율입니다. (예: 60일 정산에서 1% 차감)</p>
         </div>
       </form>
 
-      <div class="result" aria-live="polite">
+      <div class="result" id="result" data-limit="used" aria-live="polite">
+        <div class="notice">
+          <b>먼저 확인하세요</b>
+          한도가 남으셨다면 연 1.5~3%대 aT 출하선도금·농신보 1금융권 자금을 먼저 쓰시는 게 가장 유리합니다. 한도가 찼을 때만 추가 자금을 쓰세요.
+        </div>
+        <div class="result__head" id="resultHead">참고 · 그래도 추가 자금을 쓴다면</div>
         <div class="result__row">
-          <div class="result__k">지금 묶여 있는 돈</div>
-          <div class="result__v"><span id="rCapital">2억 원</span></div>
-          <div class="result__n" id="rCapitalNote">60일치 납품 대금이 늘 묶여 있습니다.</div>
+          <div class="result__label">예상 실이자 비용</div>
+          <div class="result__v" id="rInterest">210만 원</div>
+          <div class="result__n" id="rInterestNote">2억 원 × 1.05% (연 11.0% · 35일)</div>
         </div>
         <div class="result__row">
-          <div class="result__k">1년에 드는 비용</div>
-          <div class="result__v"><span id="rCost">1,217만 원</span></div>
-          <div class="result__n" id="rCostNote">1회 1% 차감을 60일 → 연 6.08%로 환산</div>
+          <div class="result__label">추가 납품 손익분기 마진</div>
+          <div class="result__v" id="rMargin">1.05<span class="u">%</span></div>
+          <div class="result__n" id="rMarginNote">추가 납품·경매로 1.05%만 더 남기면 이자 비용을 빼고도 손해가 없습니다.</div>
         </div>
-        <p class="result__line" id="rSaveLine">정산 주기를 30일로 줄이면 1년에 <b>608만 원</b>을 아낄 수 있습니다.</p>
+        <p class="verdict" id="rVerdict">1억당 이자는 <b>105만 원</b>. 35일 뒤 갚는 조건이라면, 추가 납품 마진이 1.05%만 넘으면 순이익이 남습니다.</p>
       </div>
 
       <div class="cta-box">
-        <h2>내 조건으로 비교표 받기</h2>
-        <p>지금 계산한 조건 그대로 보내주시면, 채널별 정산 수수료 비교표를 만들어 회신드립니다. 정산서 1건을 보내주시면 새는 돈도 함께 확인해 드립니다.</p>
+        <h2>1~3억, 추가로 가능한지 1분이면 확인됩니다</h2>
+        <p>정산·납품 실적(거래 이력) 기준으로 봅니다. 계약·도입 의무 없음, 영업 전화 없음.</p>
         <a class="btn btn--stack" href="https://forms.gle/wB7M9gDrPymoHdC86" target="_blank" rel="noopener noreferrer">
-          <span>무료로 받아보기 (1분 설문) →</span>
-          <small>계약·도입 의무 없음 · 영업 전화 없음</small>
+          <span>1~3억 추가 한도 가능 여부 1분 체크 →</span>
+          <small>필요 금액·기간만 고르면 끝</small>
         </a>
-        <a class="mail" id="mailBtn" href="mailto:silverstrom@naver.com">설문 대신 이메일로 2줄만 보내기</a>
-        <p class="fine">메일은 계산 결과가 미리 채워진 채로 열립니다.</p>
+        <a class="mail" id="mailBtn" href="mailto:silverstrom@naver.com">이메일로 2줄만 보내기</a>
+        <p class="fine">메일은 방금 계산한 금액·기간이 채워진 채로 열립니다.</p>
       </div>
 
       <noscript>
-        <p style="margin-top:14px;font-size:.82rem;color:#8a5b00;background:#fff8e1;border:1px solid #ffe9a8;border-radius:10px;padding:10px 12px">
+        <p style="margin-top:14px;font-size:.82rem;color:#6b5008;background:#fff8e6;border:1px solid #f0dca6;border-radius:10px;padding:10px 12px">
           계산기를 쓰려면 자바스크립트가 필요합니다.
-          <a href="https://forms.gle/wB7M9gDrPymoHdC86" target="_blank" rel="noopener noreferrer" style="color:#0a6b4e;font-weight:800">무료 비교표 신청 →</a>
+          <a href="https://forms.gle/wB7M9gDrPymoHdC86" target="_blank" rel="noopener noreferrer" style="color:#0d2440;font-weight:800">추가 한도 1분 체크 →</a>
         </p>
       </noscript>
     </div>
 
+    <section class="why">
+      <h2>이 계산기가 맞는 상황</h2>
+      <ul>
+        <li><b><span>①</span> 출하 전 원물 매입은 D+0~10 현금</b>수매·경매 대금을 먼저 내야 원물을 확보할 수 있습니다.</li>
+        <li><b><span>②</span> 마트 정산은 35일로 줄어도, 식자재 외상은 45~60일</b>B2B 식자재 55~63조 원 중 약 70%(약 40조 원)가 여전히 45~60일 외상입니다.</li>
+        <li><b><span>③</span> 한도가 차면, 추가 납품·경매를 포기하게 됩니다</b>1금융권·농신보 한도가 소진되면 다음 납품을 못 받는 게 현장의 실제 병목입니다.</li>
+      </ul>
+    </section>
+
     <footer>
       <div class="brand">
-        <svg viewBox="0 0 100 100" aria-hidden="true"><path d="M22 76V30h13v46H22zm21 0V40h13v36H43zm21 0V50h13v26H64z" fill="#10b981"/></svg>
+        <svg viewBox="0 0 100 100" aria-hidden="true"><path d="M22 76V30h13v46H22zm21 0V40h13v36H43zm21 0V50h13v26H64z" fill="#c9a227"/></svg>
         <b>좋은농장 (NiceFarm)</b>
+        <span class="tag">MoneyLock</span>
       </div>
-      <p>계산 결과는 입력값으로 계산한 추정치이고, 실제 정산 조건은 거래처·금융사 계약에 따릅니다. 진단과 비교표는 무료입니다.</p>
+      <p>계산 결과는 입력값과 연 11.0%(2금융 단기 여신 기준) 가정으로 계산한 추정치입니다. 실제 금리·한도·기간은 거래 이력과 심사 결과에 따라 달라집니다.</p>
+      <p>무료 진단은 계약·도입 의무가 없습니다. © 좋은농장 NiceFarm</p>
     </footer>
   </div>
 </main>
@@ -264,197 +342,155 @@
 (function () {
   "use strict";
 
-  /* ===== 계산 ===== */
-  function computeCore(input) {
-    var M = Number(input.monthly);
-    var D = Number(input.days);
-    var fee = Number(input.fee);
-    var rate = Number(input.rate);
-
-    if (!isFinite(M) || M < 0) M = 0;
-    if (!isFinite(D) || D <= 0) D = 30;
-    if (!isFinite(fee) || fee < 0) fee = 0;
-    if (!isFinite(rate) || rate < 0) rate = 0;
-
-    var capital = M * D / 30;
-    var effRate = (input.mode === "fee") ? (fee * 365 / D) : rate;
-    var annualCost = capital * effRate / 100;
-    var target = D > 30 ? 30 : (D > 15 ? 15 : D);
-    var capitalTarget = M * target / 30;
-    var saved = (capital - capitalTarget) * effRate / 100;
-
-    return { capital: capital, effRate: effRate, annualCost: annualCost,
-             target: target, capitalTarget: capitalTarget, saved: saved };
-  }
-
-  function fmtMoney(manwon) {
-    var m = Math.round(Number(manwon) || 0);
-    if (m <= 0) return "0원";
-    if (m >= 10000) {
-      var eok = Math.floor(m / 10000);
-      var rest = m % 10000;
-      return eok.toLocaleString("ko-KR") + "억" + (rest > 0 ? " " + rest.toLocaleString("ko-KR") + "만" : "") + " 원";
-    }
-    return m.toLocaleString("ko-KR") + "만 원";
-  }
-
-  function pct2(v) {
-    var s = (Math.round(Number(v) * 100) / 100).toFixed(2);
-    return s.replace(/\.?0+$/, function (m) { return m === ".00" || m === "0" ? "" : m; }) + "%";
-  }
-
-  function trim(v) { return String(Math.round(Number(v) * 100) / 100); }
+  var RATE = 11.0;          /* 연 % — 2금융 단기 여신 기준 */
+  var MONTH_LABEL = { 30: "1개월", 35: "출하·마트 공백", 50: "원물 선지급+정산", 60: "식자재 외상" };
+  var MAIL_TO = "silverstrom@naver.com";
+  var MIN_A = 1000, MAX_A = 100000;   /* 만 원 단위 */
 
   var $ = function (s) { return document.querySelector(s); };
   var $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
 
   var el = {
-    amount: $("#amount"), amountChips: $("#amountChips"),
-    cost: $("#cost"), costHint: $("#costHint"),
-    rCapital: $("#rCapital"), rCapitalNote: $("#rCapitalNote"),
-    rCost: $("#rCost"), rCostNote: $("#rCostNote"),
-    rSaveLine: $("#rSaveLine"), mailBtn: $("#mailBtn")
+    amount: $("#amount"), amountHint: $("#amountHint"), chips: $("#amountChips"),
+    result: $("#result"), resultHead: $("#resultHead"),
+    rInterest: $("#rInterest"), rInterestNote: $("#rInterestNote"),
+    rMargin: $("#rMargin"), rMarginNote: $("#rMarginNote"),
+    rVerdict: $("#rVerdict"), mailBtn: $("#mailBtn")
   };
   if (!el.amount) return;
 
-  var state = { monthly: 10000, days: 60, mode: "fee", fee: 1, rate: 6 };
-  var LAST = null;
-  var MAIL_TO = "silverstrom@naver.com";
+  var state = { a: 20000, days: 35, limit: "used" };
 
-  function clampAmount(v) {
-    if (!isFinite(v) || v < 100) return 100;
-    if (v > 1000000) return 1000000;
+  function clampA(v) {
+    if (!isFinite(v) || v <= 0) return MIN_A;
+    if (v < MIN_A) return MIN_A;
+    if (v > MAX_A) return MAX_A;
     return Math.round(v);
   }
-  function currentCost() { return state.mode === "fee" ? state.fee : state.rate; }
+  function fmtWon(won) {
+    var w = Math.round(Number(won) || 0);
+    if (w <= 0) return "0원";
+    if (w >= 100000000) {
+      var eok = Math.floor(w / 100000000);
+      var man = Math.round((w % 100000000) / 10000);
+      return eok.toLocaleString("ko-KR") + "억" + (man > 0 ? " " + man.toLocaleString("ko-KR") + "만" : "") + " 원";
+    }
+    return Math.round(w / 10000).toLocaleString("ko-KR") + "만 원";
+  }
+  function fmtEok(manwon) {
+    var m = Number(manwon) || 0;
+    if (m >= 10000) {
+      var eok = Math.floor(m / 10000), rest = m % 10000;
+      return eok.toLocaleString("ko-KR") + "억" + (rest > 0 ? " " + rest.toLocaleString("ko-KR") + "만" : "");
+    }
+    return m.toLocaleString("ko-KR") + "만";
+  }
+  function pctOf(days) { return RATE * days / 365; }   /* % */
+  function pct2(days) { return pctOf(days).toFixed(2); }
+
+  function compute() {
+    var principal = state.a * 10000;
+    var pct = pctOf(state.days);
+    return {
+      principal: principal,
+      pct: pct,
+      interest: principal * pct / 100,
+      perEok: 100000000 * pct / 100
+    };
+  }
 
   function render() {
-    var r = computeCore(state);
-    LAST = r;
+    var r = compute();
+    var p = pct2(state.days);
 
-    el.rCapital.textContent = fmtMoney(r.capital);
-    el.rCapitalNote.textContent = state.days + "일치 납품 대금이 늘 묶여 있습니다.";
+    el.amountHint.innerHTML = "= <b>" + fmtEok(state.a) + " 원</b> · 1~3억 구간에서 대부분 쓰십니다";
+    el.rInterest.textContent = fmtWon(r.interest);
+    el.rInterestNote.textContent = fmtEok(state.a) + " 원 × " + p + "% (연 " + RATE.toFixed(1) + " · " + state.days + "일)";
+    el.rMargin.innerHTML = p + '<span class="u">%</span>';
+    el.rMarginNote.textContent = "추가 납품·경매로 " + p + "%만 더 남기면 이자 비용을 빼고도 손해가 없습니다.";
+    el.rVerdict.innerHTML = "1억당 이자는 <b>" + fmtWon(r.perEok) + "</b>. " +
+      state.days + "일 뒤 갚는 조건이라면, 추가 납품 마진이 " + p + "%만 넘으면 순이익이 남습니다.";
 
-    el.rCost.textContent = fmtMoney(r.annualCost);
-    el.rCostNote.textContent = state.mode === "fee"
-      ? "1회 " + trim(state.fee) + "% 차감을 " + state.days + "일 → 연 " + pct2(r.effRate) + "로 환산"
-      : "연 " + trim(state.rate) + "% 기준으로 계산";
-
-    if (r.target === state.days) {
-      el.rSaveLine.textContent = "이미 가장 짧은 정산 주기입니다.";
-    } else {
-      el.rSaveLine.innerHTML = "정산 주기를 " + r.target + "일로 줄이면 1년에 <b>" +
-        fmtMoney(r.saved) + "</b>을 아낄 수 있습니다.";
-    }
+    el.result.setAttribute("data-limit", state.limit);
+    el.resultHead.textContent = "참고 · 그래도 추가 자금을 쓴다면";
 
     $$("#amountChips .chip").forEach(function (b) {
-      b.classList.toggle("on", Number(b.getAttribute("data-v")) === state.monthly);
+      b.classList.toggle("on", Number(b.getAttribute("data-v")) === state.a);
     });
 
-    if (el.mailBtn) el.mailBtn.setAttribute("href", mailtoHref());
+    if (el.mailBtn) el.mailBtn.setAttribute("href", mailtoHref(r, p));
   }
 
-  function mailBody() {
-    var r = LAST || computeCore(state);
-    var costLine = state.mode === "fee"
-      ? "1회 " + trim(state.fee) + "% 차감 (연 " + pct2(r.effRate) + " 환산)"
-      : "연 " + trim(state.rate) + "%";
+  function mailBody(r, p) {
+    var limitTxt = state.limit === "used" ? "1금융·농신보 한도 소진" : "아직 한도 여유 있음";
     return [
-      "안녕하세요. 계산기에서 나온 제 조건입니다.",
-      "월 납품액 " + fmtMoney(state.monthly) + " · 정산 주기 " + state.days + "일 · " + costLine,
-      "묶여 있는 돈 " + fmtMoney(r.capital) + " · 1년 비용 " + fmtMoney(r.annualCost),
+      "안녕하세요. 좋은농장 계산기에서 나온 제 조건입니다.",
+      "필요 금액 " + fmtEok(state.a) + " 원 · 사용 기간 " + state.days + "일 (" + MONTH_LABEL[state.days] + ") · " + limitTxt,
+      "예상 실이자 " + fmtWon(r.interest) + " (연 " + RATE.toFixed(1) + "% 기준 " + p + "%)",
+      "추가 납품 손익분기 마진 " + p + "%",
       "",
-      "이 조건으로 채널별 수수료 비교표를 받아보고 싶습니다."
+      "이 조건으로 1~3억 추가 한도가 가능한지 보고 싶습니다."
     ].join("\r\n");
   }
-  function mailtoHref() {
+  function mailtoHref(r, p) {
     return "mailto:" + MAIL_TO +
-      "?subject=" + encodeURIComponent("정산 비교표 요청 · 월 " + fmtMoney(state.monthly) + " · " + state.days + "일 정산") +
-      "&body=" + encodeURIComponent(mailBody());
+      "?subject=" + encodeURIComponent("추가 한도 문의 · " + fmtEok(state.a) + "원 · " + state.days + "일") +
+      "&body=" + encodeURIComponent(mailBody(r, p));
   }
 
   /* ===== 입력 ===== */
   el.amount.addEventListener("input", function () {
-    var raw = Number(String(el.amount.value).replace(/[^0-9.]/g, ""));
+    var raw = Number(String(el.amount.value).replace(/[^0-9]/g, ""));
     if (!isFinite(raw) || raw <= 0) return;
-    state.monthly = clampAmount(raw);
+    state.a = clampA(raw);
     render();
   });
   el.amount.addEventListener("blur", function () {
-    state.monthly = clampAmount(Number(String(el.amount.value).replace(/[^0-9.]/g, "")) || state.monthly);
-    el.amount.value = state.monthly.toLocaleString("ko-KR");
+    var raw = Number(String(el.amount.value).replace(/[^0-9]/g, ""));
+    state.a = clampA(raw || state.a);
+    el.amount.value = state.a.toLocaleString("ko-KR");
     render();
   });
-  el.amountChips.addEventListener("click", function (e) {
+  el.amount.addEventListener("focus", function () {
+    el.amount.value = String(state.a);
+    el.amount.select();
+  });
+  el.chips.addEventListener("click", function (e) {
     var b = e.target.closest(".chip");
     if (!b) return;
-    state.monthly = clampAmount(Number(b.getAttribute("data-v")));
-    el.amount.value = state.monthly.toLocaleString("ko-KR");
+    state.a = clampA(Number(b.getAttribute("data-v")));
+    el.amount.value = state.a.toLocaleString("ko-KR");
     render();
   });
 
-  $$('input[name="cycle"]').forEach(function (r) {
-    r.addEventListener("change", function () {
-      state.days = Number(r.value);
-      render();
-    });
+  $$('input[name="period"]').forEach(function (r) {
+    r.addEventListener("change", function () { state.days = Number(r.value); render(); });
+  });
+  $$('input[name="limit"]').forEach(function (r) {
+    r.addEventListener("change", function () { state.limit = r.value; render(); });
   });
 
-  $$('input[name="mode"]').forEach(function (r) {
-    r.addEventListener("change", function () {
-      state.mode = r.value;
-      el.cost.value = trim(currentCost());
-      el.costHint.textContent = state.mode === "fee"
-        ? "정산금에서 한 번 떼이는 비율입니다. (예: 60일 정산에서 1% 차감)"
-        : "운전자금을 빌린 연 이자율입니다. (예: 은행 대출 연 5~6%)";
-      render();
-    });
-  });
-
-  el.cost.addEventListener("input", function () {
-    var raw = Number(String(el.cost.value).replace(/[^0-9.]/g, ""));
-    if (!isFinite(raw)) return;
-    var v = Math.min(40, Math.max(0, raw));
-    if (state.mode === "fee") state.fee = v; else state.rate = v;
-    render();
-  });
-  el.cost.addEventListener("blur", function () {
-    el.cost.value = trim(currentCost());
-    render();
-  });
-
-  /* ===== URL 파라미터 (?m=10000&d=60&f=1 / ?mode=rate&r=6) ===== */
+  /* ===== URL 파라미터 (?a=20000&d=35&s=free) ===== */
   (function prefill() {
     try {
       var q = new URLSearchParams(window.location.search);
-      var m = Number(q.get("m"));
-      if (q.get("m") && isFinite(m) && m >= 100) {
-        state.monthly = clampAmount(m);
-        el.amount.value = state.monthly.toLocaleString("ko-KR");
-      }
+      var a = Number(q.get("a"));
+      if (q.get("a") && isFinite(a) && a > 0) state.a = clampA(a);
       var d = Number(q.get("d"));
-      if ([15, 30, 45, 60].indexOf(d) >= 0) {
+      if ([30, 35, 50, 60].indexOf(d) >= 0) {
         state.days = d;
-        var rd = document.querySelector('input[name="cycle"][value="' + d + '"]');
+        var rd = document.querySelector('input[name="period"][value="' + d + '"]');
         if (rd) rd.checked = true;
       }
-      if (q.get("mode") === "rate") {
-        state.mode = "rate";
-        var rm = document.querySelector('input[name="mode"][value="rate"]');
-        if (rm) rm.checked = true;
-        var rr = Number(q.get("r"));
-        if (q.get("r") && isFinite(rr) && rr >= 0) state.rate = Math.min(40, rr);
-        el.costHint.textContent = "운전자금을 빌린 연 이자율입니다. (예: 은행 대출 연 5~6%)";
-      } else {
-        var f = Number(q.get("f"));
-        if (q.get("f") && isFinite(f) && f >= 0) state.fee = Math.min(40, f);
+      if (q.get("s") === "free") {
+        state.limit = "free";
+        var rl = document.querySelector('input[name="limit"][value="free"]');
+        if (rl) rl.checked = true;
       }
-      el.cost.value = trim(currentCost());
     } catch (err) { /* 기본값 유지 */ }
   })();
 
-  el.amount.value = state.monthly.toLocaleString("ko-KR");
-  el.cost.value = trim(currentCost());
+  el.amount.value = state.a.toLocaleString("ko-KR");
   render();
 })();
 </script>
